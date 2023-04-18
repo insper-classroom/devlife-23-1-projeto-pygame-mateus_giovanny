@@ -14,6 +14,7 @@ class Jogo:
     
     def desenha(self):
         JANELA.fill(PRETO)
+        self.tela_atual.desenha()
         pygame.display.update()
 
     def game_loop(self):
@@ -25,6 +26,8 @@ class Jogo:
 
 class Fase1(Fase):
     def __init__(self):
+        pass
+    def desenha(self):
         self.gera_mapa()
 
 if __name__ == '__main__':
