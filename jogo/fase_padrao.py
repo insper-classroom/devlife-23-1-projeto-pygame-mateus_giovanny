@@ -27,7 +27,7 @@ class Fase(ABC):
 
     def gera_paredes_retangulo(self):
         posicao = self.gera_posicao_desocupada()
-        for i in range(12):
+        for i in range(MARGEM//2):
             if posicao[1] < ALTURA_MAPA:
                     posicao = [posicao[0], posicao[1]]
                     if not posicao in POSICOES_OCUPADAS:
@@ -36,7 +36,7 @@ class Fase(ABC):
                         OBJETOS.append({'cor':AZUL,
                                         'rect':rect})
             posicao[1] += 1
-        for i in range(8):
+        for i in range(MARGEM):
             if posicao[0] < LARGURA_MAPA:
                 posicao = [posicao[0], posicao[1]]
                 if not posicao in POSICOES_OCUPADAS:
@@ -45,6 +45,25 @@ class Fase(ABC):
                     OBJETOS.append({'cor':AZUL,
                                     'rect':rect})
             posicao[0] += 1
+        for i in range(MARGEM//2):
+            if posicao[1] < ALTURA_MAPA:
+                    posicao = [posicao[0], posicao[1]]
+                    if not posicao in POSICOES_OCUPADAS:
+                        POSICOES_OCUPADAS.append(posicao)
+                        rect = pygame.Rect(posicao[0] * BLOCO + MARGEM, posicao[1] * BLOCO + MARGEM, BLOCO, BLOCO)
+                        OBJETOS.append({'cor':AZUL,
+                                        'rect':rect})
+            posicao[1] -= 1
+        for i in range(MARGEM):
+            if posicao[0] < LARGURA_MAPA:
+                posicao = [posicao[0], posicao[1]]
+                if not posicao in POSICOES_OCUPADAS:
+                    POSICOES_OCUPADAS.append(posicao)
+                    rect = pygame.Rect(posicao[0] * BLOCO + MARGEM, posicao[1] * BLOCO + MARGEM, BLOCO, BLOCO)
+                    OBJETOS.append({'cor':AZUL,
+                                    'rect':rect})
+            posicao[0] -= 1
     def gera_mapa(self):
         self.gera_paredes_em_volta()
-        self.gera_paredes_retangulo()
+        for i in range(6):
+            self.gera_paredes_retangulo()
