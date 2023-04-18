@@ -26,6 +26,11 @@ diminuir velocidade do fantasma enquanto foge
 
 metas extras :
 fotos
+audio
+pontuação
+guarda resultados
+
+
 
 
 
