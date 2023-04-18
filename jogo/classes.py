@@ -29,7 +29,7 @@ class Fase1(Fase):
         self.gera_mapa()
 
     def desenha(self):
-        pass
+        self.desenha_mapa()
 
 if __name__ == '__main__':
     jogo = Jogo()
