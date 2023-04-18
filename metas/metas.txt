@@ -1,0 +1,37 @@
+cobrinha
+campo minado 
+pac man
+flappy bird
+forca
+
+
+JOGO ESCOLHIDO
+PAC MAN
+
+* mais parecido com o original possivel
+
+metas jogo;
+mapa; 
+movimento do pac;
+colisão com as paredes;
+gerar bolinhas;
+gerar fantasma;
+gerar come fantasma;
+fantasma andar ;
+fantasma perseguir e fugir;
+fantasma resurgir; 
+diminuir velocidade do fantasma enquanto foge
+
+
+
+metas extras :
+fotos
+
+
+
+
+
+
+
+
+
