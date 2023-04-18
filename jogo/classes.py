@@ -26,9 +26,11 @@ class Jogo:
 
 class Fase1(Fase):
     def __init__(self):
-        pass
-    def desenha(self):
         self.gera_mapa()
+
+    def desenha(self):
+        for obj in OBJETOS:
+            pygame.draw.rect(JANELA, obj['cor'], obj['rect'])
 
 if __name__ == '__main__':
     jogo = Jogo()
