@@ -21,3 +21,4 @@ AMARELO_PAC_MAN = (255,255,0)
 #jogador
 PAC_MAN0 = pygame.image.load('jogo/assets\img\pac_man.png')
 TAMANHO_JOGADOR = (BLOCO-4,BLOCO-4)
+VELOCIDADE = 1
