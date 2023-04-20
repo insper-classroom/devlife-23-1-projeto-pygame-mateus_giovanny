@@ -25,24 +25,23 @@ class Jogo:
 
 class Fase1:
     def __init__(self):
-        self.gera_mapa()
+        # self.gera_mapa()
         self.mapa_img = pygame.image.load('jogo/assets\img\mapa.png')
     
-    def gera_mapa(self):
-        with open('jogo/mapas/mapa1.txt','w') as mapa1:
-            for y in range(ALTURA_MAPA):
-                if y != 0:
-                    mapa1.write('\n')
-                for x in range(LARGURA_MAPA):
-                    if (x == 0 or y == 0) or (x == LARGURA_MAPA - 1 or y == ALTURA_MAPA - 1):
-                        mapa1.write('1')
-                    # elif LARGURA_MAPA // 2 - 5 <= x <= LARGURA_MAPA // 2 + 5 and ALTURA_MAPA // 2 - 5 <= y <= ALTURA_MAPA // 2 + 5:
-                    #     mapa1.write('1')
-                    else:
-                        mapa1.write('2')
+    # def gera_mapa(self):
+    #     with open('jogo/mapas/mapa2.txt','w') as mapa1:
+    #         for y in range(ALTURA_MAPA):
+    #             if y != 0:
+    #                 mapa1.write('\n')
+    #             for x in range(LARGURA_MAPA):
+    #                 if (x == 0 or y == 0) or (x == LARGURA_MAPA - 1 or y == ALTURA_MAPA - 1):
+    #                     mapa1.write('1')
+    #                 # elif LARGURA_MAPA // 2 - 5 <= x <= LARGURA_MAPA // 2 + 5 and ALTURA_MAPA // 2 - 5 <= y <= ALTURA_MAPA // 2 + 5:
+    #                 #     mapa1.write('1')
+    #                 else:
+    #                     mapa1.write('2')
 
     def desenha(self):
-        JANELA.blit(pygame.transform.scale(self.mapa_img, (LARGURA_MAPA*BLOCO, ALTURA_MAPA*BLOCO)), (MARGEM_X, MARGEM_Y))
         with open('jogo/mapas/mapa1.txt','r') as mapa1:
             for y in range(ALTURA_MAPA):
                 linha = mapa1.readline()
