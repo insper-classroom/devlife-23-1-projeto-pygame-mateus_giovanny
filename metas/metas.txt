@@ -10,7 +10,7 @@ PAC MAN
 
 * mais parecido com o original possivel
 
-metas jogo;
+metas jogo:
 mapa; 
 movimento do pac;
 colisão com as paredes;
