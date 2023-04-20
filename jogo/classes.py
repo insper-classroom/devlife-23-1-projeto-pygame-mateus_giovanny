@@ -7,7 +7,7 @@ class Jogo:
 
     def atualiza(self):
         pygame.time.Clock().tick(30)
-        
+
         self.tela_atual = self.tela_atual.atualiza()
 
         if self.tela_atual == None:
@@ -92,8 +92,7 @@ class Jogador(pygame.sprite.Sprite):
         super().__init__()
         self.grupos = grupos
         self.grupos['all_sprites'].add(self)
-        img = PAC_MAN0
-        self.image = pygame.transform.scale(img, TAMANHO_JOGADOR)
+        self.image = PAC_MAN[0]
         self.rect = self.image.get_rect()
         x = 14
         y = 16
@@ -103,12 +102,16 @@ class Jogador(pygame.sprite.Sprite):
 
     def update(self):
         if self.direcao['direita']:
+            self.image = PAC_MAN[0]
             self.rect.x += VELOCIDADE
         elif self.direcao['esquerda']:
+            self.image = PAC_MAN[1]
             self.rect.x -= VELOCIDADE
         elif self.direcao['cima']:
+            self.image = PAC_MAN[2]
             self.rect.y -= VELOCIDADE
         elif self.direcao['baixo']:
+            self.image = PAC_MAN[3]
             self.rect.y += VELOCIDADE
 
     def reseta_direcao(self):
