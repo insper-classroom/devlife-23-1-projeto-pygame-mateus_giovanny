@@ -6,9 +6,12 @@ class Jogo:
         self.tela_atual = Fase1()
 
     def atualiza(self):
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                return False
+        pygame.time.Clock().tick(30)
+
+        self.tela_atual = self.tela_atual.atualiza()
+
+        if self.tela_atual == None:
+            return False
         return True
     
     def desenha(self):
@@ -25,8 +28,10 @@ class Jogo:
 
 class Fase1:
     def __init__(self):
-        # self.gera_mapa()
-        self.mapa_img = pygame.image.load('jogo/assets\img\mapa.png')
+        self.grupos = {
+            'all_sprites': pygame.sprite.Group()
+            }
+        self.jogador = Jogador(self.grupos)
     
     # def gera_mapa(self):
     #     with open('jogo/mapas/mapa2.txt','w') as mapa1:
@@ -54,11 +59,63 @@ class Fase1:
                         pos_y = y * BLOCO + BLOCO // 2 + MARGEM_Y
                         raio = BLOCO // 10
                         pygame.draw.circle(JANELA, AMARELO_PONTOS, (pos_x, pos_y), raio)
-                    # elif linha[x] == '0':
-                    #     pos_x = x * BLOCO + BLOCO // 2 + MARGEM_X
-                    #     pos_y = y * BLOCO + BLOCO // 2 + MARGEM
-                    #     raio = BLOCO // 2.5
-                    #     pygame.draw.circle(JANELA, AMARELO_PONTOS, (pos_x, pos_y), raio)
+                    elif linha[x] == '3':
+                        pos_x = x * BLOCO + BLOCO // 2 + MARGEM_X
+                        pos_y = y * BLOCO + BLOCO // 2 + MARGEM_Y
+                        raio = BLOCO // 2.5
+                        pygame.draw.circle(JANELA, AMARELO_PONTOS, (pos_x, pos_y), raio)
+        self.grupos['all_sprites'].draw(JANELA)
+    
+    def atualiza(self):
+        self.grupos['all_sprites'].update()
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                return None
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_d:
+                    self.jogador.reseta_direcao()
+                    self.jogador.direcao['direita'] = True
+                elif evento.key == pygame.K_a:
+                    self.jogador.reseta_direcao()
+                    self.jogador.direcao['esquerda'] = True
+                elif evento.key == pygame.K_w:
+                    self.jogador.reseta_direcao()
+                    self.jogador.direcao['cima'] = True
+                elif evento.key == pygame.K_s:
+                    self.jogador.reseta_direcao()
+                    self.jogador.direcao['baixo'] = True
+
+        return self
+
+class Jogador(pygame.sprite.Sprite):
+    def __init__(self, grupos):
+        super().__init__()
+        self.grupos = grupos
+        self.grupos['all_sprites'].add(self)
+        self.image = PAC_MAN[0]
+        self.rect = self.image.get_rect()
+        x = 14
+        y = 16
+        self.rect.x = x * BLOCO + MARGEM_X + 2
+        self.rect.y = y * BLOCO + MARGEM_Y + 2
+        self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
+
+    def update(self):
+        if self.direcao['direita']:
+            self.image = PAC_MAN[0]
+            self.rect.x += VELOCIDADE
+        elif self.direcao['esquerda']:
+            self.image = PAC_MAN[1]
+            self.rect.x -= VELOCIDADE
+        elif self.direcao['cima']:
+            self.image = PAC_MAN[2]
+            self.rect.y -= VELOCIDADE
+        elif self.direcao['baixo']:
+            self.image = PAC_MAN[3]
+            self.rect.y += VELOCIDADE
+
+    def reseta_direcao(self):
+        self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
 
 if __name__ == '__main__':
     jogo = Jogo()
