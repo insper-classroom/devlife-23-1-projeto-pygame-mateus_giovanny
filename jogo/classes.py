@@ -3,7 +3,11 @@ from constantes import *
 class Jogo:
     def __init__(self):
         pygame.init()
+        self.grupos = {
+            'all_sprites': pygame.sprite.Group()
+            }
         self.tela_atual = Fase1()
+        self.jogador = Jogador(self.grupos)
 
     def atualiza(self):
         for evento in pygame.event.get():
@@ -14,6 +18,7 @@ class Jogo:
     def desenha(self):
         JANELA.fill(PRETO)
         self.tela_atual.desenha()
+        self.grupos['all_sprites'].draw(JANELA)
         pygame.display.update()
 
     def game_loop(self):
@@ -26,7 +31,8 @@ class Jogo:
 class Fase1:
     def __init__(self):
         # self.gera_mapa()
-        self.mapa_img = pygame.image.load('jogo/assets\img\mapa.png')
+        # self.mapa_img = pygame.image.load('jogo/assets\img\mapa.png')
+        pass
     
     # def gera_mapa(self):
     #     with open('jogo/mapas/mapa2.txt','w') as mapa1:
@@ -59,6 +65,19 @@ class Fase1:
                     #     pos_y = y * BLOCO + BLOCO // 2 + MARGEM
                     #     raio = BLOCO // 2.5
                     #     pygame.draw.circle(JANELA, AMARELO_PONTOS, (pos_x, pos_y), raio)
+
+class Jogador(pygame.sprite.Sprite):
+    def __init__(self, grupos):
+        super().__init__()
+        self.grupos = grupos
+        self.grupos['all_sprites'].add(self)
+        img = PAC_MAN0
+        self.image = pygame.transform.scale(img, TAMANHO_JOGADOR)
+        self.rect = self.image.get_rect()
+        x = 14
+        y = 16
+        self.rect.x = x * BLOCO + MARGEM_X + 2
+        self.rect.y = y * BLOCO + MARGEM_Y + 2
 
 if __name__ == '__main__':
     jogo = Jogo()

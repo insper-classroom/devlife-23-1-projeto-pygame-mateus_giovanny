@@ -17,3 +17,7 @@ BRANCO = (255,255,255)
 AZUL = (0,0,255)
 AMARELO_PONTOS = (255,219,88)
 AMARELO_PAC_MAN = (255,255,0)
+
+#jogador
+PAC_MAN0 = pygame.image.load('jogo/assets\img\pac_man.png')
+TAMANHO_JOGADOR = (BLOCO-4,BLOCO-4)
