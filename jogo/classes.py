@@ -6,6 +6,8 @@ class Jogo:
         self.tela_atual = Fase1()
 
     def atualiza(self):
+        pygame.time.Clock().tick(30)
+        
         self.tela_atual = self.tela_atual.atualiza()
 
         if self.tela_atual == None:
@@ -29,8 +31,6 @@ class Fase1:
         self.grupos = {
             'all_sprites': pygame.sprite.Group()
             }
-        self.delta_t = 0
-        self.t0 = 0
         self.jogador = Jogador(self.grupos)
     
     # def gera_mapa(self):
@@ -67,10 +67,7 @@ class Fase1:
         self.grupos['all_sprites'].draw(JANELA)
     
     def atualiza(self):
-        t1 = pygame.time.get_ticks()
-        self.delta_t = (t1 - self.t0) / 1000
-        self.t0 = t1
-        self.grupos['all_sprites'].update(self.delta_t)
+        self.grupos['all_sprites'].update()
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return None
@@ -104,7 +101,7 @@ class Jogador(pygame.sprite.Sprite):
         self.rect.y = y * BLOCO + MARGEM_Y + 2
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
 
-    def update(self, delta_t):
+    def update(self):
         if self.direcao['direita']:
             self.rect.x += VELOCIDADE
         elif self.direcao['esquerda']:
