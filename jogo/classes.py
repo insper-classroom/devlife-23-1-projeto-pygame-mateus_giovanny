@@ -64,10 +64,16 @@ class Fase1:
                     elif linha[x] == '3':
                         rect = pygame.Rect(x * BLOCO + BLOCO // 4 + MARGEM_X, y * BLOCO + BLOCO // 4 + MARGEM_Y, BLOCO // 2, BLOCO // 2)
                         self.grupos['come_fantasma'].append(rect)
+                    elif linha[x] == '4':
+                        rect = pygame.Rect(x * BLOCO + MARGEM_X, y * BLOCO + MARGEM_Y, BLOCO, BLOCO//2)
+                        self.grupos['paredes'].append(rect)
 
     def desenha(self):
         for parede in self.grupos['paredes']:
-            pygame.draw.rect(JANELA, AZUL, parede, 1)
+            if parede.height == BLOCO//2:
+                pygame.draw.rect(JANELA, BRANCO, parede)
+            else:
+                pygame.draw.rect(JANELA, AZUL, parede, 1)
         for bolinha in self.grupos['bolinhas']:
             pygame.draw.rect(JANELA, AMARELO_PONTOS, bolinha, 0, BLOCO // 10)
         for come_fantasma in self.grupos['come_fantasma']:
@@ -165,16 +171,6 @@ class Jogador(pygame.sprite.Sprite):
             if pygame.Rect(self.rect.x,self.rect.y+VELOCIDADE,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
                 self.reseta_direcao()
                 self.direcao['baixo'] = True
-
-
-# class Parede(pygame.sprite.Sprite):
-#     def __init__(self, x, y, grupos):
-#         super().__init__()
-#         self.rect = pygame.Rect(x * BLOCO + MARGEM_X, y * BLOCO + MARGEM_Y, BLOCO, BLOCO)
-#         self.image = self.rect
-#         self.grupos = grupos
-#         self.grupos['all_sprites'].add(self)
-#         self.grupos['paredes'].add(self)
 
 if __name__ == '__main__':
     jogo = Jogo()
