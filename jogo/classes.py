@@ -89,6 +89,10 @@ class Fase1:
                     self.jogador.prox_direcao = 'cima'
                 elif evento.key == pygame.K_s:
                     self.jogador.prox_direcao = 'baixo'
+        
+        # if len(self.grupos['bolinhas']) == 0:
+        #     return Fase2()
+        # pra quando tiver uma proxima fase
 
         return self
 
@@ -132,6 +136,14 @@ class Jogador(pygame.sprite.Sprite):
                 self.rect.y += VELOCIDADE
             elif self.direcao['baixo']:
                 self.rect.y -= VELOCIDADE
+
+        index = self.rect.collidelist(self.grupos['bolinhas'])
+        if index != -1:
+            del self.grupos['bolinhas'][index]
+
+        index = self.rect.collidelist(self.grupos['come_fantasma'])
+        if index != -1:
+            del self.grupos['come_fantasma'][index]
 
     def reseta_direcao(self):
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
