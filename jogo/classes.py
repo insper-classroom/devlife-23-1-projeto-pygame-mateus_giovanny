@@ -29,9 +29,13 @@ class Jogo:
 class Fase1:
     def __init__(self):
         self.grupos = {
-            'all_sprites': pygame.sprite.Group()
+            'all_sprites': pygame.sprite.Group(),
+            'paredes': [],
+            'bolinhas': [],
+            'come_fantasma': []
             }
         self.jogador = Jogador(self.grupos)
+        self.le_mapa()
     
     # def gera_mapa(self):
     #     with open('jogo/mapas/mapa2.txt','w') as mapa1:
@@ -46,24 +50,28 @@ class Fase1:
     #                 else:
     #                     mapa1.write('2')
 
-    def desenha(self):
+    def le_mapa(self):
         with open('jogo/mapas/mapa1.txt','r') as mapa1:
             for y in range(ALTURA_MAPA):
                 linha = mapa1.readline()
                 for x in range(len(linha)):
                     if linha[x] == '1':
                         rect = pygame.Rect(x * BLOCO + MARGEM_X, y * BLOCO + MARGEM_Y, BLOCO, BLOCO)
-                        pygame.draw.rect(JANELA, AZUL, rect, 1)
+                        self.grupos['paredes'].append(rect)
                     elif linha[x] == '2':
-                        pos_x = x * BLOCO + BLOCO // 2 + MARGEM_X
-                        pos_y = y * BLOCO + BLOCO // 2 + MARGEM_Y
-                        raio = BLOCO // 10
-                        pygame.draw.circle(JANELA, AMARELO_PONTOS, (pos_x, pos_y), raio)
+                        rect = pygame.Rect(x * BLOCO + BLOCO // 2 + MARGEM_X, y * BLOCO + BLOCO // 2 + MARGEM_Y, BLOCO // 10, BLOCO // 10)
+                        self.grupos['bolinhas'].append(rect)
                     elif linha[x] == '3':
-                        pos_x = x * BLOCO + BLOCO // 2 + MARGEM_X
-                        pos_y = y * BLOCO + BLOCO // 2 + MARGEM_Y
-                        raio = BLOCO // 2.5
-                        pygame.draw.circle(JANELA, AMARELO_PONTOS, (pos_x, pos_y), raio)
+                        rect = pygame.Rect(x * BLOCO + BLOCO // 4 + MARGEM_X, y * BLOCO + BLOCO // 4 + MARGEM_Y, BLOCO // 2, BLOCO // 2)
+                        self.grupos['come_fantasma'].append(rect)
+
+    def desenha(self):
+        for parede in self.grupos['paredes']:
+            pygame.draw.rect(JANELA, AZUL, parede, 1)
+        for bolinha in self.grupos['bolinhas']:
+            pygame.draw.rect(JANELA, AMARELO_PONTOS, bolinha, 0, BLOCO // 10)
+        for come_fantasma in self.grupos['come_fantasma']:
+            pygame.draw.rect(JANELA, AMARELO_PONTOS, come_fantasma, 0, BLOCO // 2)
         self.grupos['all_sprites'].draw(JANELA)
     
     def atualiza(self):
@@ -116,6 +124,15 @@ class Jogador(pygame.sprite.Sprite):
 
     def reseta_direcao(self):
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
+
+# class Parede(pygame.sprite.Sprite):
+#     def __init__(self, x, y, grupos):
+#         super().__init__()
+#         self.rect = pygame.Rect(x * BLOCO + MARGEM_X, y * BLOCO + MARGEM_Y, BLOCO, BLOCO)
+#         self.image = self.rect
+#         self.grupos = grupos
+#         self.grupos['all_sprites'].add(self)
+#         self.grupos['paredes'].add(self)
 
 if __name__ == '__main__':
     jogo = Jogo()
