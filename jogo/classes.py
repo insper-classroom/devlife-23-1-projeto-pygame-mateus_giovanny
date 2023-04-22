@@ -32,9 +32,11 @@ class Fase1:
             'all_sprites': pygame.sprite.Group(),
             'paredes': [],
             'bolinhas': [],
-            'come_fantasma': []
+            'come_fantasma': [],
+            'fantasmas': pygame.sprite.Group()
             }
         self.jogador = Jogador(self.grupos)
+        self.fatasma_vermelho = Fantasma(self.grupos, FANTASMA_AMARELO, (LARGURA_MAPA//2) * BLOCO + MARGEM_X + 2, (ALTURA_MAPA//2 - 5) * BLOCO + MARGEM_Y + 2)
         self.le_mapa()
     
     # def gera_mapa(self):
@@ -81,6 +83,7 @@ class Fase1:
         self.grupos['all_sprites'].draw(JANELA)
     
     def atualiza(self):
+        self.fatasma_vermelho.pos_jogador = (self.jogador.rect.x,self.jogador.rect.y)
         self.grupos['all_sprites'].update()
         self.jogador.verifica_direcao_livre()
         for evento in pygame.event.get():
@@ -171,6 +174,112 @@ class Jogador(pygame.sprite.Sprite):
             if pygame.Rect(self.rect.x,self.rect.y+VELOCIDADE,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
                 self.reseta_direcao()
                 self.direcao['baixo'] = True
+
+class Fantasma(pygame.sprite.Sprite):
+    def __init__(self, grupos, img, x, y):
+        super().__init__()
+
+        self.grupos = grupos
+        self.grupos['all_sprites'].add(self)
+        self.grupos['fantasmas'].add(self)
+
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.direcao = {'direita': False, 'esquerda': True, 'cima': False, 'baixo': False}
+        self.prox_direcao = ''
+
+        self.pos_jogador = 0
+
+        
+
+    def reseta_direcao(self):
+        self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
+
+    def verifica_direcao_livre(self):
+        if self.prox_direcao == 'direita':
+            if pygame.Rect(self.rect.x+VELOCIDADE,self.rect.y,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
+                self.reseta_direcao()
+                self.direcao['direita'] = True
+        elif self.prox_direcao == 'esquerda':
+            if pygame.Rect(self.rect.x-VELOCIDADE,self.rect.y,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
+                self.reseta_direcao()
+                self.direcao['esquerda'] = True
+        elif self.prox_direcao == 'cima':
+            if pygame.Rect(self.rect.x,self.rect.y-VELOCIDADE,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
+                self.reseta_direcao()
+                self.direcao['cima'] = True
+        elif self.prox_direcao == 'baixo':
+            if pygame.Rect(self.rect.x,self.rect.y+VELOCIDADE,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
+                self.reseta_direcao()
+                self.direcao['baixo'] = True
+
+    def escolhe_direcao(self):
+        if self.rect.x == self.pos_jogador[0]:
+            if self.rect.y > self.pos_jogador[1]:
+                self.reseta_direcao()
+                self.direcao['cima'] = True
+            else:
+                self.reseta_direcao()
+                self.direcao['baixo'] = True
+        elif self.rect.y == self.pos_jogador[1]:
+            if self.rect.x > self.pos_jogador[0]:
+                self.reseta_direcao()
+                self.direcao['esquerda'] = True
+            else:
+                self.reseta_direcao()
+                self.direcao['direita'] = True
+        else:
+            if abs(self.rect.x - self.pos_jogador[0]) > abs(self.rect.y - self.pos_jogador[1]):
+                if self.rect.x > self.pos_jogador[0]:
+                    self.reseta_direcao()
+                    self.reseta_direcao()
+                    self.direcao['esquerda'] = True
+                else:
+                    self.reseta_direcao()
+                    self.direcao['direita'] = True
+            else:
+                if self.rect.y > self.pos_jogador[1]:
+                    self.reseta_direcao()
+                    self.direcao['cima'] = True
+                else:
+                    self.reseta_direcao()
+                    self.direcao['baixo'] = True
+
+    def update(self):
+        # self.escolhe_direcao()
+        # self.verifica_direcao_livre()
+
+        if self.direcao['direita']:
+            self.rect.x += VELOCIDADE
+        elif self.direcao['esquerda']:
+            self.rect.x -= VELOCIDADE
+        elif self.direcao['cima']:
+            self.rect.y -= VELOCIDADE
+        elif self.direcao['baixo']:
+            self.rect.y += VELOCIDADE
+
+        if self.rect.x < MARGEM_X:
+            self.rect.x = LARGURA_MAPA * BLOCO + MARGEM_X
+        elif self.rect.x > LARGURA_MAPA * BLOCO + MARGEM_X:
+            self.rect.x = MARGEM_X
+
+        if self.rect.collidelist(self.grupos['paredes']) != -1:
+            if self.direcao['direita']:
+                self.rect.x -= VELOCIDADE
+                self.escolhe_direcao()
+            elif self.direcao['esquerda']:
+                self.rect.x += VELOCIDADE
+                self.escolhe_direcao()
+            elif self.direcao['cima']:
+                self.rect.y += VELOCIDADE
+                self.escolhe_direcao()
+            elif self.direcao['baixo']:
+                self.rect.y -= VELOCIDADE
+                self.escolhe_direcao()
+
+
 
 if __name__ == '__main__':
     jogo = Jogo()
