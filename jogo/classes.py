@@ -1,5 +1,6 @@
 import pygame
 from constantes import *
+import math
 class Jogo:
     def __init__(self):
         pygame.init()
@@ -35,8 +36,9 @@ class Fase1:
             'come_fantasma': [],
             'fantasmas': pygame.sprite.Group()
             }
+        self.pos_navegaveis = []
         self.jogador = Jogador(self.grupos)
-        self.fatasma_vermelho = Fantasma(self.grupos, FANTASMA_AMARELO, (LARGURA_MAPA//2) * BLOCO + MARGEM_X + 2, (ALTURA_MAPA//2 - 5) * BLOCO + MARGEM_Y + 2)
+        self.fatasma_vermelho = Fantasma(self.grupos, FANTASMA_AMARELO, (LARGURA_MAPA//2) * BLOCO + MARGEM_X + 2, (ALTURA_MAPA//2 - 5) * BLOCO + MARGEM_Y + 2, self.pos_navegaveis)
         self.le_mapa()
     
     # def gera_mapa(self):
@@ -63,12 +65,16 @@ class Fase1:
                     elif linha[x] == '2':
                         rect = pygame.Rect(x * BLOCO + BLOCO // 2 + MARGEM_X, y * BLOCO + BLOCO // 2 + MARGEM_Y, BLOCO // 10, BLOCO // 10)
                         self.grupos['bolinhas'].append(rect)
+                        self.pos_navegaveis.append((round(x * BLOCO + MARGEM_X + 2), round(y * BLOCO + MARGEM_Y + 2)))
                     elif linha[x] == '3':
                         rect = pygame.Rect(x * BLOCO + BLOCO // 4 + MARGEM_X, y * BLOCO + BLOCO // 4 + MARGEM_Y, BLOCO // 2, BLOCO // 2)
                         self.grupos['come_fantasma'].append(rect)
+                        self.pos_navegaveis.append((round(x * BLOCO + MARGEM_X + 2), round(y * BLOCO + MARGEM_Y + 2)))
                     elif linha[x] == '4':
                         rect = pygame.Rect(x * BLOCO + MARGEM_X, y * BLOCO + MARGEM_Y, BLOCO, BLOCO//2)
                         self.grupos['paredes'].append(rect)
+                    elif linha[x] == '0':
+                        self.pos_navegaveis.append((round(x * BLOCO + MARGEM_X + 2), round(y * BLOCO + MARGEM_Y + 2)))
 
     def desenha(self):
         for parede in self.grupos['paredes']:
@@ -176,7 +182,7 @@ class Jogador(pygame.sprite.Sprite):
                 self.direcao['baixo'] = True
 
 class Fantasma(pygame.sprite.Sprite):
-    def __init__(self, grupos, img, x, y):
+    def __init__(self, grupos, img, x, y, pos_navegaveis):
         super().__init__()
 
         self.grupos = grupos
@@ -187,97 +193,72 @@ class Fantasma(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.direcao = {'direita': False, 'esquerda': True, 'cima': False, 'baixo': False}
+        self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
         self.prox_direcao = ''
 
         self.pos_jogador = 0
-
-        
-
-    def reseta_direcao(self):
-        self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
-
-    def verifica_direcao_livre(self):
-        if self.prox_direcao == 'direita':
-            if pygame.Rect(self.rect.x+VELOCIDADE,self.rect.y,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
-                self.reseta_direcao()
-                self.direcao['direita'] = True
-        elif self.prox_direcao == 'esquerda':
-            if pygame.Rect(self.rect.x-VELOCIDADE,self.rect.y,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
-                self.reseta_direcao()
-                self.direcao['esquerda'] = True
-        elif self.prox_direcao == 'cima':
-            if pygame.Rect(self.rect.x,self.rect.y-VELOCIDADE,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
-                self.reseta_direcao()
-                self.direcao['cima'] = True
-        elif self.prox_direcao == 'baixo':
-            if pygame.Rect(self.rect.x,self.rect.y+VELOCIDADE,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
-                self.reseta_direcao()
-                self.direcao['baixo'] = True
-
-    def escolhe_direcao(self):
-        if self.rect.x == self.pos_jogador[0]:
-            if self.rect.y > self.pos_jogador[1]:
-                self.reseta_direcao()
-                self.direcao['cima'] = True
-            else:
-                self.reseta_direcao()
-                self.direcao['baixo'] = True
-        elif self.rect.y == self.pos_jogador[1]:
-            if self.rect.x > self.pos_jogador[0]:
-                self.reseta_direcao()
-                self.direcao['esquerda'] = True
-            else:
-                self.reseta_direcao()
-                self.direcao['direita'] = True
-        else:
-            if abs(self.rect.x - self.pos_jogador[0]) > abs(self.rect.y - self.pos_jogador[1]):
-                if self.rect.x > self.pos_jogador[0]:
-                    self.reseta_direcao()
-                    self.reseta_direcao()
-                    self.direcao['esquerda'] = True
-                else:
-                    self.reseta_direcao()
-                    self.direcao['direita'] = True
-            else:
-                if self.rect.y > self.pos_jogador[1]:
-                    self.reseta_direcao()
-                    self.direcao['cima'] = True
-                else:
-                    self.reseta_direcao()
-                    self.direcao['baixo'] = True
+        self.pos_navegaveis = pos_navegaveis
 
     def update(self):
-        # self.escolhe_direcao()
-        # self.verifica_direcao_livre()
+        print(self.persegicao())
 
-        if self.direcao['direita']:
-            self.rect.x += VELOCIDADE
-        elif self.direcao['esquerda']:
-            self.rect.x -= VELOCIDADE
-        elif self.direcao['cima']:
-            self.rect.y -= VELOCIDADE
-        elif self.direcao['baixo']:
-            self.rect.y += VELOCIDADE
+    def persegicao(self):
+        abertas = []
+        expandidas = []
+        print(self.pos_navegaveis)
+        abertas.append((self.rect.x, self.rect.y))
 
-        if self.rect.x < MARGEM_X:
-            self.rect.x = LARGURA_MAPA * BLOCO + MARGEM_X
-        elif self.rect.x > LARGURA_MAPA * BLOCO + MARGEM_X:
-            self.rect.x = MARGEM_X
+        while len(abertas) > 0:
+            print(abertas)
+            atual = abertas.pop(0)
+            expandidas.append(atual)
 
-        if self.rect.collidelist(self.grupos['paredes']) != -1:
-            if self.direcao['direita']:
-                self.rect.x -= VELOCIDADE
-                self.escolhe_direcao()
-            elif self.direcao['esquerda']:
-                self.rect.x += VELOCIDADE
-                self.escolhe_direcao()
-            elif self.direcao['cima']:
-                self.rect.y += VELOCIDADE
-                self.escolhe_direcao()
-            elif self.direcao['baixo']:
-                self.rect.y -= VELOCIDADE
-                self.escolhe_direcao()
+            if atual == self.pos_jogador:
+                break
+            else:
+                self.prox_celula(abertas, expandidas, atual)
+
+        return expandidas
+
+    def prox_celula(self, abertas, expandidas, atual):
+        menor_distancia = math.inf
+        posicao_aberta = None
+
+        if atual[0] > MARGEM_X:
+            if (atual[0]-BLOCO+1,atual[1]) not in abertas and (atual[0]-BLOCO+1,atual[1]) not in expandidas and (atual[0]-BLOCO+1,atual[1]) in self.pos_navegaveis:
+                distancia = self.distancia_euclidiana(atual[0]-BLOCO+1, atual[1], self.pos_jogador[0], self.pos_jogador[1])
+                if distancia < menor_distancia:
+                    menor_distancia = distancia
+                    posicao_aberta = (atual[0]-BLOCO+1,atual[1])
+
+        if atual[0] < LARGURA_MAPA * BLOCO + MARGEM_X:
+            if (atual[0]+BLOCO+1,atual[1]) not in abertas and (atual[0]+BLOCO+1,atual[1]) not in expandidas and (atual[0]+BLOCO+1,atual[1]) in self.pos_navegaveis:
+                distancia = self.distancia_euclidiana(atual[0]+BLOCO+1, atual[1], self.pos_jogador[0], self.pos_jogador[1])
+                if distancia < menor_distancia:
+                    menor_distancia = distancia
+                    posicao_aberta = (atual[0]+BLOCO+1,atual[1])
+
+        if atual[1] > MARGEM_Y:
+            if (atual[0],atual[1]-BLOCO) not in abertas and (atual[0],atual[1]-BLOCO) not in expandidas and (atual[0],atual[1]-BLOCO) in self.pos_navegaveis:
+                distancia = self.distancia_euclidiana(atual[0], atual[1]-BLOCO, self.pos_jogador[0], self.pos_jogador[1])
+                if distancia < menor_distancia:
+                    menor_distancia = distancia
+                    posicao_aberta = (atual[0],atual[1]-BLOCO)
+
+        if atual[1] < ALTURA_MAPA * BLOCO + MARGEM_Y:
+            if (atual[0],atual[1]+BLOCO) not in abertas and (atual[0],atual[1]+BLOCO) not in expandidas and (atual[0],atual[1]+BLOCO) in self.pos_navegaveis:
+                distancia = self.distancia_euclidiana(atual[0], atual[1]+BLOCO, self.pos_jogador[0], self.pos_jogador[1])
+                if distancia < menor_distancia:
+                    menor_distancia = distancia
+                    posicao_aberta = (atual[0],atual[1]+BLOCO)
+        
+        if posicao_aberta != None:
+            abertas.append(posicao_aberta)
+
+    def distancia_euclidiana(self,x1,y1,x2,y2):
+        distancia = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        return distancia
+
 
 
 
