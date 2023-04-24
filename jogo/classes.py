@@ -91,9 +91,10 @@ class Fase1:
     
     def atualiza(self):
         self.fatasma_vermelho.pos_jogador = (self.jogador.rect.x,self.jogador.rect.y)
-        self.fatasma_vermelho.update_caminho()
+        # self.fatasma_vermelho.update_caminho()
         self.grupos['all_sprites'].update()
         self.jogador.verifica_direcao_livre()
+        self.fatasma_vermelho.verifica_direcao_livre()
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return None
@@ -213,12 +214,14 @@ class Fantasma(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
-        self.prox_direcao = ''
+        self.prox_direcao = []
+        self.direcao_anterior = None
 
         self.pos_jogador = None
         self.pos_navegaveis = pos_navegaveis
         self.caminho = []
         self.celula_alvo = None
+        self.contador = 0
 
     def update_caminho(self):
         celula_inicial = Celula(self.rect.x, self.rect.y)
@@ -284,25 +287,180 @@ class Fantasma(pygame.sprite.Sprite):
         return vizinhos
     
     def verifica_parede(self, celula):
-        if pygame.Rect(celula[0], celula[1], 1, 1).collidelist(self.grupos['paredes']) == -1:
+        if pygame.Rect(celula[0], celula[1], self.rect.width, self.rect.height).collidelist(self.grupos['paredes']) == -1:
             return True
         return False
     
-    def update(self):
-        if self.celula_alvo:
-            dx = self.celula_alvo.x - self.rect.x
-            dy = self.celula_alvo.y - self.rect.y
-            distancia = math.sqrt(dx**2 + dy**2)
-            if distancia > 0:
-                dx /= distancia
-                dy /= distancia
-            self.rect.x += dx * VELOCIDADE
-            self.rect.y += dy * VELOCIDADE
+    def reseta_direcao(self):
+        self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
+    
+    def verifica_direcao_livre(self):
+        print(self.prox_direcao)
+        if self.prox_direcao[0] == 'direita':
+            if pygame.Rect(self.rect.x+VELOCIDADE,self.rect.y,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
+                self.reseta_direcao()
+                self.direcao['direita'] = True
+        elif self.prox_direcao[0] == 'esquerda':
+            if pygame.Rect(self.rect.x-VELOCIDADE,self.rect.y,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
+                self.reseta_direcao()
+                self.direcao['esquerda'] = True
+        elif self.prox_direcao[0] == 'cima':
+            if pygame.Rect(self.rect.x,self.rect.y-VELOCIDADE,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
+                self.reseta_direcao()
+                self.direcao['cima'] = True
+        elif self.prox_direcao[0] == 'baixo':
+            if pygame.Rect(self.rect.x,self.rect.y+VELOCIDADE,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
+                self.reseta_direcao()
+                self.direcao['baixo'] = True
+        if not (self.direcao['direita'] or self.direcao['esquerda'] or self.direcao['cima'] or self.direcao['baixo']):
+            del self.prox_direcao[0]
 
-            if distancia < VELOCIDADE:
-                if self.caminho:
-                    self.caminho.pop(0)
-                self.celula_alvo = None
+    def escolhe_direcao(self):
+        print(self.direcao_anterior)
+        for i in range(2):
+            if self.pos_jogador[0] > self.rect.x:
+                if 'direita' not in self.prox_direcao and self.verifica_parede((self.rect.x + VELOCIDADE, self.rect.y)):
+                    self.prox_direcao.append('direita')
+            else:
+                if 'esquerda' not in self.prox_direcao and self.verifica_parede((self.rect.x - VELOCIDADE, self.rect.y)):
+                    self.prox_direcao.append('esquerda')
+            if self.pos_jogador[1] > self.rect.y:
+                if 'baixo' not in self.prox_direcao and self.verifica_parede((self.rect.x, self.rect.y + VELOCIDADE)):
+                    self.prox_direcao.append('baixo')
+            else:
+                if 'cima' not in self.prox_direcao and self.verifica_parede((self.rect.x, self.rect.y - VELOCIDADE)):
+                    self.prox_direcao.append('cima')
+
+        # tentar fazer a ideia do A* mas dessa vez fazer um lista com as direcoes e não com as posicoes
+
+        # for i in range(2):
+        #     menor_distancia = math.inf
+
+        #     distancia = self.distancia_euclidiana(self.rect.x + VELOCIDADE, self.rect.y, self.pos_jogador[0], self.pos_jogador[1])
+        #     if distancia < menor_distancia and 'direita' not in self.prox_direcao and self.verifica_parede((self.rect.x + VELOCIDADE, self.rect.y, self.pos_jogador[0])) and self.direcao_anterior != 'direita':
+        #         menor_distancia = distancia
+        #         direcao = 'direita'
+        #     distancia = self.distancia_euclidiana(self.rect.x - VELOCIDADE, self.rect.y, self.pos_jogador[0], self.pos_jogador[1])
+        #     if distancia < menor_distancia and 'esquerda' not in self.prox_direcao and self.verifica_parede((self.rect.x - VELOCIDADE, self.rect.y)) and self.direcao_anterior != 'esquerda':
+        #         menor_distancia = distancia
+        #         direcao = 'esquerda'
+        #     distancia = self.distancia_euclidiana(self.rect.x, self.rect.y + VELOCIDADE, self.pos_jogador[0], self.pos_jogador[1])
+        #     if distancia < menor_distancia and 'baixo' not in self.prox_direcao and self.verifica_parede((self.rect.x, self.rect.y + VELOCIDADE)) and self.direcao_anterior != 'baixo':
+        #         menor_distancia = distancia
+        #         direcao = 'baixo'
+        #     distancia = self.distancia_euclidiana(self.rect.x, self.rect.y - VELOCIDADE, self.pos_jogador[0], self.pos_jogador[1])
+        #     if distancia < menor_distancia and 'cima' not in self.prox_direcao and self.verifica_parede((self.rect.x, self.rect.y - VELOCIDADE)) and self.direcao_anterior != 'cima':
+        #         menor_distancia = distancia
+        #         direcao = 'cima'
+
+        #     self.prox_direcao.append(direcao)
+        
+
+    def update(self):
+
+        if self.direcao['direita']:
+            self.rect.x += VELOCIDADE
+        elif self.direcao['esquerda']:
+            self.rect.x -= VELOCIDADE
+        elif self.direcao['cima']:
+            self.rect.y -= VELOCIDADE
+        elif self.direcao['baixo']:
+            self.rect.y += VELOCIDADE
+
+        if self.rect.x < MARGEM_X:
+            self.rect.x = LARGURA_MAPA * BLOCO + MARGEM_X
+        elif self.rect.x > LARGURA_MAPA * BLOCO + MARGEM_X:
+            self.rect.x = MARGEM_X
+
+        if self.rect.collidelist(self.grupos['paredes']) != -1:
+            if self.direcao['direita']:
+                self.rect.x -= VELOCIDADE
+                self.direcao_anterior = self.prox_direcao.pop(0)
+                # self.escolhe_direcao()
+            elif self.direcao['esquerda']:
+                self.rect.x += VELOCIDADE
+                self.direcao_anterior = self.prox_direcao.pop(0)
+                # self.escolhe_direcao()
+            elif self.direcao['cima']:
+                self.rect.y += VELOCIDADE
+                self.direcao_anterior = self.prox_direcao.pop(0)
+                # self.escolhe_direcao()
+            elif self.direcao['baixo']:
+                self.rect.y -= VELOCIDADE
+                self.direcao_anterior = self.prox_direcao.pop(0)
+
+        if not self.prox_direcao:
+            self.escolhe_direcao()
+                # self.escolhe_direcao()
+        # if self.celula_alvo:
+        #     dx = self.celula_alvo.x - self.rect.x
+        #     dy = self.celula_alvo.y - self.rect.y
+        #     distancia = math.sqrt(dx**2 + dy**2)
+        #     if distancia > 0:
+        #         dx /= distancia
+        #         dy /= distancia
+        #     self.rect.x += dx * VELOCIDADE
+        #     self.rect.y += dy * VELOCIDADE
+
+        #     if distancia < VELOCIDADE:
+        #         if self.caminho:
+        #             self.caminho.pop(0)
+        #         self.celula_alvo = None
+
+    def persegicao(self):
+        abertas = []
+        expandidas = []
+        abertas.append((self.rect.x, self.rect.y))
+
+        while len(abertas) > 0:
+            atual = abertas.pop(0)
+            expandidas.append(atual)
+
+            if atual == self.pos_jogador:
+                break
+            else:
+                self.prox_celula(abertas, expandidas, atual)
+
+        return expandidas
+
+    def prox_celula(self, abertas, expandidas, atual):
+        menor_distancia = math.inf
+        posicao_aberta = None
+
+        if atual[0] > MARGEM_X:
+            if (atual[0]-BLOCO+1,atual[1]) not in abertas and (atual[0]-BLOCO+1,atual[1]) not in expandidas and (atual[0]-BLOCO+1,atual[1]) in self.pos_navegaveis:
+                distancia = self.distancia_euclidiana(atual[0]-BLOCO+1, atual[1], self.pos_jogador[0], self.pos_jogador[1])
+                if distancia < menor_distancia:
+                    menor_distancia = distancia
+                    posicao_aberta = (atual[0]-BLOCO+1,atual[1])
+
+        if atual[0] < LARGURA_MAPA * BLOCO + MARGEM_X:
+            if (atual[0]+BLOCO+1,atual[1]) not in abertas and (atual[0]+BLOCO+1,atual[1]) not in expandidas and (atual[0]+BLOCO+1,atual[1]) in self.pos_navegaveis:
+                distancia = self.distancia_euclidiana(atual[0]+BLOCO+1, atual[1], self.pos_jogador[0], self.pos_jogador[1])
+                if distancia < menor_distancia:
+                    menor_distancia = distancia
+                    posicao_aberta = (atual[0]+BLOCO+1,atual[1])
+
+        if atual[1] > MARGEM_Y:
+            if (atual[0],atual[1]-BLOCO) not in abertas and (atual[0],atual[1]-BLOCO) not in expandidas and (atual[0],atual[1]-BLOCO) in self.pos_navegaveis:
+                distancia = self.distancia_euclidiana(atual[0], atual[1]-BLOCO, self.pos_jogador[0], self.pos_jogador[1])
+                if distancia < menor_distancia:
+                    menor_distancia = distancia
+                    posicao_aberta = (atual[0],atual[1]-BLOCO)
+
+        if atual[1] < ALTURA_MAPA * BLOCO + MARGEM_Y:
+            if (atual[0],atual[1]+BLOCO) not in abertas and (atual[0],atual[1]+BLOCO) not in expandidas and (atual[0],atual[1]+BLOCO) in self.pos_navegaveis:
+                distancia = self.distancia_euclidiana(atual[0], atual[1]+BLOCO, self.pos_jogador[0], self.pos_jogador[1])
+                if distancia < menor_distancia:
+                    menor_distancia = distancia
+                    posicao_aberta = (atual[0],atual[1]+BLOCO)
+        
+        if posicao_aberta != None:
+            abertas.append(posicao_aberta)
+
+    def distancia_euclidiana(self,x1,y1,x2,y2):
+        distancia = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        return distancia
 
 
 if __name__ == '__main__':
