@@ -1,6 +1,7 @@
 import pygame
 from constantes import *
 import math
+import heapq
 class Jogo:
     def __init__(self):
         pygame.init()
@@ -90,6 +91,7 @@ class Fase1:
     
     def atualiza(self):
         self.fatasma_vermelho.pos_jogador = (self.jogador.rect.x,self.jogador.rect.y)
+        self.fatasma_vermelho.update_caminho()
         self.grupos['all_sprites'].update()
         self.jogador.verifica_direcao_livre()
         for evento in pygame.event.get():
@@ -181,6 +183,23 @@ class Jogador(pygame.sprite.Sprite):
                 self.reseta_direcao()
                 self.direcao['baixo'] = True
 
+class Celula(object):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.custo_g = math.inf
+        self.custo_h = 0
+        self.custo_f = math.inf
+        self.pai = None
+
+    def __lt__(self, outro):
+        return self.custo_f < outro.custo_f
+    
+    def distancia_euclidiana(self, outro):
+        dx = self.x - outro.x
+        dy = self.y - outro.y
+        return math.sqrt(dx**2 + dy**2)
+
 class Fantasma(pygame.sprite.Sprite):
     def __init__(self, grupos, img, x, y, pos_navegaveis):
         super().__init__()
@@ -196,70 +215,94 @@ class Fantasma(pygame.sprite.Sprite):
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
         self.prox_direcao = ''
 
-        self.pos_jogador = 0
+        self.pos_jogador = None
         self.pos_navegaveis = pos_navegaveis
+        self.caminho = []
+        self.celula_alvo = None
 
-    def update(self):
-        print(self.persegicao())
+    def update_caminho(self):
+        celula_inicial = Celula(self.rect.x, self.rect.y)
+        celula_final = Celula(self.pos_jogador[0], self.pos_jogador[1])
+        abertas = [celula_inicial]
+        fechada = set()
+        celula_inicial.custo_g = 0
+        celula_inicial.custo_h = celula_inicial.distancia_euclidiana(celula_final)
+        celula_inicial.custo_f = celula_inicial.custo_h
 
-    def persegicao(self):
-        abertas = []
-        expandidas = []
-        print(self.pos_navegaveis)
-        abertas.append((self.rect.x, self.rect.y))
+        while abertas:
+            celula_atual = heapq.heappop(abertas)
+            if celula_atual == celula_final:
+                self.caminho = []
+                while celula_atual != celula_inicial:
+                    self.caminho.append((celula_atual.x, celula_atual.y))
+                    celula_atual = celula_atual.pai
+                    self.caminho.reverse()
+                    break
+            
+            fechada.add(celula_atual)
 
-        while len(abertas) > 0:
-            print(abertas)
-            atual = abertas.pop(0)
-            expandidas.append(atual)
+            for celula_vizinha in self.pega_vizinhos(celula_atual):
+                if celula_vizinha in fechada:
+                    continue
 
-            if atual == self.pos_jogador:
-                break
+                prox_custo_g = celula_atual.custo_g + celula_atual.distancia_euclidiana(celula_vizinha)
+
+                if celula_vizinha not in abertas:
+                    heapq.heappush(abertas, celula_vizinha)
+                elif prox_custo_g >= celula_vizinha.custo_g:
+                    continue
+
+                celula_vizinha.pai = celula_atual
+                celula_vizinha.custo_g = prox_custo_g
+                celula_vizinha.custo_h = celula_vizinha.distancia_euclidiana(celula_final)
+                celula_vizinha.custo_f = celula_vizinha.custo_g + celula_vizinha.custo_h
+
+            if self.caminho:
+                self.celula_alvo = Celula(*self.caminho[0])
             else:
-                self.prox_celula(abertas, expandidas, atual)
+                self.celula_alvo = None
 
-        return expandidas
+    def pega_vizinhos(self, celula_atual):
+        vizinhos = []
 
-    def prox_celula(self, abertas, expandidas, atual):
-        menor_distancia = math.inf
-        posicao_aberta = None
+        if celula_atual.x > MARGEM_X:
+            if self.verifica_parede((celula_atual.x - BLOCO+1, celula_atual.y)):
+                vizinhos.append(Celula(celula_atual.x - BLOCO+1, celula_atual.y))
 
-        if atual[0] > MARGEM_X:
-            if (atual[0]-BLOCO+1,atual[1]) not in abertas and (atual[0]-BLOCO+1,atual[1]) not in expandidas and (atual[0]-BLOCO+1,atual[1]) in self.pos_navegaveis:
-                distancia = self.distancia_euclidiana(atual[0]-BLOCO+1, atual[1], self.pos_jogador[0], self.pos_jogador[1])
-                if distancia < menor_distancia:
-                    menor_distancia = distancia
-                    posicao_aberta = (atual[0]-BLOCO+1,atual[1])
+        if celula_atual.x < (LARGURA_MAPA * BLOCO + MARGEM_X) - 1:
+            if self.verifica_parede((celula_atual.x + BLOCO+1, celula_atual.y)):
+                vizinhos.append(Celula(celula_atual.x + BLOCO+1, celula_atual.y))
 
-        if atual[0] < LARGURA_MAPA * BLOCO + MARGEM_X:
-            if (atual[0]+BLOCO+1,atual[1]) not in abertas and (atual[0]+BLOCO+1,atual[1]) not in expandidas and (atual[0]+BLOCO+1,atual[1]) in self.pos_navegaveis:
-                distancia = self.distancia_euclidiana(atual[0]+BLOCO+1, atual[1], self.pos_jogador[0], self.pos_jogador[1])
-                if distancia < menor_distancia:
-                    menor_distancia = distancia
-                    posicao_aberta = (atual[0]+BLOCO+1,atual[1])
+        if celula_atual.y > MARGEM_Y:
+            if self.verifica_parede((celula_atual.x, celula_atual.y - BLOCO)):
+                vizinhos.append(Celula(celula_atual.x, celula_atual.y - BLOCO))
 
-        if atual[1] > MARGEM_Y:
-            if (atual[0],atual[1]-BLOCO) not in abertas and (atual[0],atual[1]-BLOCO) not in expandidas and (atual[0],atual[1]-BLOCO) in self.pos_navegaveis:
-                distancia = self.distancia_euclidiana(atual[0], atual[1]-BLOCO, self.pos_jogador[0], self.pos_jogador[1])
-                if distancia < menor_distancia:
-                    menor_distancia = distancia
-                    posicao_aberta = (atual[0],atual[1]-BLOCO)
+        if celula_atual.y < (ALTURA_MAPA * BLOCO + MARGEM_Y) - 1:
+            if self.verifica_parede((celula_atual.x, celula_atual.y + BLOCO)):
+                vizinhos.append(Celula(celula_atual.x, celula_atual.y + BLOCO))
 
-        if atual[1] < ALTURA_MAPA * BLOCO + MARGEM_Y:
-            if (atual[0],atual[1]+BLOCO) not in abertas and (atual[0],atual[1]+BLOCO) not in expandidas and (atual[0],atual[1]+BLOCO) in self.pos_navegaveis:
-                distancia = self.distancia_euclidiana(atual[0], atual[1]+BLOCO, self.pos_jogador[0], self.pos_jogador[1])
-                if distancia < menor_distancia:
-                    menor_distancia = distancia
-                    posicao_aberta = (atual[0],atual[1]+BLOCO)
-        
-        if posicao_aberta != None:
-            abertas.append(posicao_aberta)
+        return vizinhos
+    
+    def verifica_parede(self, celula):
+        if pygame.Rect(celula[0], celula[1], 1, 1).collidelist(self.grupos['paredes']) == -1:
+            return True
+        return False
+    
+    def update(self):
+        if self.celula_alvo:
+            dx = self.celula_alvo.x - self.rect.x
+            dy = self.celula_alvo.y - self.rect.y
+            distancia = math.sqrt(dx**2 + dy**2)
+            if distancia > 0:
+                dx /= distancia
+                dy /= distancia
+            self.rect.x += dx * VELOCIDADE
+            self.rect.y += dy * VELOCIDADE
 
-    def distancia_euclidiana(self,x1,y1,x2,y2):
-        distancia = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-        return distancia
-
-
+            if distancia < VELOCIDADE:
+                if self.caminho:
+                    self.caminho.pop(0)
+                self.celula_alvo = None
 
 
 if __name__ == '__main__':
