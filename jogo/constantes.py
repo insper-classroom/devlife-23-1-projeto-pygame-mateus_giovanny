@@ -17,3 +17,9 @@ BRANCO = (255,255,255)
 AZUL = (0,0,255)
 AMARELO_PONTOS = (255,219,88)
 AMARELO_PAC_MAN = (255,255,0)
+
+#jogador
+TAMANHO_JOGADOR = (BLOCO-4,BLOCO-4)
+PAC_MAN = [pygame.transform.scale(pygame.image.load('jogo/assets\img\pac_man.png'), TAMANHO_JOGADOR),pygame.transform.scale(pygame.image.load('jogo/assets\img\pac_man_E.png'), TAMANHO_JOGADOR),
+pygame.transform.scale(pygame.image.load('jogo/assets\img\pac_man_C.png'), TAMANHO_JOGADOR),pygame.transform.scale(pygame.image.load('jogo/assets\img\pac_man_B.png'), TAMANHO_JOGADOR)]
+VELOCIDADE = 5
