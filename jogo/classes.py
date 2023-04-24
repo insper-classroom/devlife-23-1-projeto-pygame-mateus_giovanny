@@ -94,7 +94,7 @@ class Fase1:
         # self.fatasma_vermelho.update_caminho()
         self.grupos['all_sprites'].update()
         self.jogador.verifica_direcao_livre()
-        self.fatasma_vermelho.verifica_direcao_livre()
+        # self.fatasma_vermelho.verifica_direcao_livre()
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return None
@@ -184,22 +184,13 @@ class Jogador(pygame.sprite.Sprite):
                 self.reseta_direcao()
                 self.direcao['baixo'] = True
 
-class Celula(object):
+class No(object):
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.custo_g = math.inf
-        self.custo_h = 0
-        self.custo_f = math.inf
+        self.pos = (x,y)
+        self.vizinhos = []
         self.pai = None
-
-    def __lt__(self, outro):
-        return self.custo_f < outro.custo_f
-    
-    def distancia_euclidiana(self, outro):
-        dx = self.x - outro.x
-        dy = self.y - outro.y
-        return math.sqrt(dx**2 + dy**2)
 
 class Fantasma(pygame.sprite.Sprite):
     def __init__(self, grupos, img, x, y, pos_navegaveis):
@@ -214,7 +205,7 @@ class Fantasma(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
-        self.prox_direcao = []
+        self.prox_direcao = ''
         self.direcao_anterior = None
 
         self.pos_jogador = None
@@ -223,71 +214,59 @@ class Fantasma(pygame.sprite.Sprite):
         self.celula_alvo = None
         self.contador = 0
 
+        self.prioridade = ''
+
     def update_caminho(self):
-        celula_inicial = Celula(self.rect.x, self.rect.y)
-        celula_final = Celula(self.pos_jogador[0], self.pos_jogador[1])
-        abertas = [celula_inicial]
-        fechada = set()
-        celula_inicial.custo_g = 0
-        celula_inicial.custo_h = celula_inicial.distancia_euclidiana(celula_final)
-        celula_inicial.custo_f = celula_inicial.custo_h
+        no_atual = No(self.rect.x, self.rect.y)
+        no_final = No(self.pos_jogador[0], self.pos_jogador[1])
+        visitados = []
+        para = False
 
-        while abertas:
-            celula_atual = heapq.heappop(abertas)
-            if celula_atual == celula_final:
-                self.caminho = []
-                while celula_atual != celula_inicial:
-                    self.caminho.append((celula_atual.x, celula_atual.y))
-                    celula_atual = celula_atual.pai
-                    self.caminho.reverse()
-                    break
-            
-            fechada.add(celula_atual)
+        if no_atual.pos not in visitados:
+            self.visita(no_atual, visitados, no_final, para)
 
-            for celula_vizinha in self.pega_vizinhos(celula_atual):
-                if celula_vizinha in fechada:
-                    continue
+    def visita(self, no, visitados, no_final, para):
+        visitados.append(no.pos)
+        self.add_vizinhos(no, visitados)
+        for no_vizinho in no.vizinhos:
+            if para:
+                return
+            if no_vizinho.pos not in visitados:
+                no_vizinho.pai = no
+                if no_vizinho.pos == no_final.pos:
+                    print(1)
+                    para = True
+                    return
+                self.visita(no_vizinho, visitados, no_final, para)
 
-                prox_custo_g = celula_atual.custo_g + celula_atual.distancia_euclidiana(celula_vizinha)
+    def add_vizinhos(self, no_atual, visitados):
+        if no_atual.x > MARGEM_X:
+            if self.verifica_parede((no_atual.x - VELOCIDADE, no_atual.y)):
+                novo_no = No(no_atual.x - VELOCIDADE, no_atual.y)
+                if novo_no.pos not in visitados:
+                    no_atual.vizinhos.append(novo_no)
 
-                if celula_vizinha not in abertas:
-                    heapq.heappush(abertas, celula_vizinha)
-                elif prox_custo_g >= celula_vizinha.custo_g:
-                    continue
+        if no_atual.x < (LARGURA_MAPA * BLOCO + MARGEM_X) - 1:
+            if self.verifica_parede((no_atual.x + VELOCIDADE, no_atual.y)):
+                novo_no = No(no_atual.x + VELOCIDADE, no_atual.y)
+                if novo_no.pos not in visitados:
+                    no_atual.vizinhos.append(novo_no)
 
-                celula_vizinha.pai = celula_atual
-                celula_vizinha.custo_g = prox_custo_g
-                celula_vizinha.custo_h = celula_vizinha.distancia_euclidiana(celula_final)
-                celula_vizinha.custo_f = celula_vizinha.custo_g + celula_vizinha.custo_h
+        if no_atual.y > MARGEM_Y:
+            if self.verifica_parede((no_atual.x, no_atual.y - VELOCIDADE)):
+                novo_no = No(no_atual.x, no_atual.y - VELOCIDADE)
+                if novo_no.pos not in visitados:
+                    no_atual.vizinhos.append(novo_no)
 
-            if self.caminho:
-                self.celula_alvo = Celula(*self.caminho[0])
-            else:
-                self.celula_alvo = None
-
-    def pega_vizinhos(self, celula_atual):
-        vizinhos = []
-
-        if celula_atual.x > MARGEM_X:
-            if self.verifica_parede((celula_atual.x - BLOCO+1, celula_atual.y)):
-                vizinhos.append(Celula(celula_atual.x - BLOCO+1, celula_atual.y))
-
-        if celula_atual.x < (LARGURA_MAPA * BLOCO + MARGEM_X) - 1:
-            if self.verifica_parede((celula_atual.x + BLOCO+1, celula_atual.y)):
-                vizinhos.append(Celula(celula_atual.x + BLOCO+1, celula_atual.y))
-
-        if celula_atual.y > MARGEM_Y:
-            if self.verifica_parede((celula_atual.x, celula_atual.y - BLOCO)):
-                vizinhos.append(Celula(celula_atual.x, celula_atual.y - BLOCO))
-
-        if celula_atual.y < (ALTURA_MAPA * BLOCO + MARGEM_Y) - 1:
-            if self.verifica_parede((celula_atual.x, celula_atual.y + BLOCO)):
-                vizinhos.append(Celula(celula_atual.x, celula_atual.y + BLOCO))
-
-        return vizinhos
+        if no_atual.y < (ALTURA_MAPA * BLOCO + MARGEM_Y) - 1:
+            if self.verifica_parede((no_atual.x, no_atual.y + VELOCIDADE)):
+                novo_no = No(no_atual.x, no_atual.y + VELOCIDADE)
+                if novo_no.pos not in visitados:
+                    no_atual.vizinhos.append(novo_no)
+                
     
-    def verifica_parede(self, celula):
-        if pygame.Rect(celula[0], celula[1], self.rect.width, self.rect.height).collidelist(self.grupos['paredes']) == -1:
+    def verifica_parede(self, x, y):
+        if pygame.Rect(x, y, self.rect.width, self.rect.height).collidelist(self.grupos['paredes']) == -1:
             return True
         return False
     
@@ -295,42 +274,72 @@ class Fantasma(pygame.sprite.Sprite):
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
     
     def verifica_direcao_livre(self):
-        print(self.prox_direcao)
-        if self.prox_direcao[0] == 'direita':
+        if self.prox_direcao == 'direita':
             if pygame.Rect(self.rect.x+VELOCIDADE,self.rect.y,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
                 self.reseta_direcao()
                 self.direcao['direita'] = True
-        elif self.prox_direcao[0] == 'esquerda':
+        elif self.prox_direcao == 'esquerda':
             if pygame.Rect(self.rect.x-VELOCIDADE,self.rect.y,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
                 self.reseta_direcao()
                 self.direcao['esquerda'] = True
-        elif self.prox_direcao[0] == 'cima':
+        elif self.prox_direcao == 'cima':
             if pygame.Rect(self.rect.x,self.rect.y-VELOCIDADE,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
                 self.reseta_direcao()
                 self.direcao['cima'] = True
-        elif self.prox_direcao[0] == 'baixo':
+        elif self.prox_direcao == 'baixo':
             if pygame.Rect(self.rect.x,self.rect.y+VELOCIDADE,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
                 self.reseta_direcao()
                 self.direcao['baixo'] = True
-        if not (self.direcao['direita'] or self.direcao['esquerda'] or self.direcao['cima'] or self.direcao['baixo']):
-            del self.prox_direcao[0]
 
     def escolhe_direcao(self):
-        print(self.direcao_anterior)
-        for i in range(2):
-            if self.pos_jogador[0] > self.rect.x:
-                if 'direita' not in self.prox_direcao and self.verifica_parede((self.rect.x + VELOCIDADE, self.rect.y)):
-                    self.prox_direcao.append('direita')
+        if self.prioridade == 'direita':
+            if self.verifica_parede(self.rect.x + VELOCIDADE, self.rect.y):
+                self.reseta_direcao()
+                self.direcao['direita'] = True
             else:
-                if 'esquerda' not in self.prox_direcao and self.verifica_parede((self.rect.x - VELOCIDADE, self.rect.y)):
-                    self.prox_direcao.append('esquerda')
-            if self.pos_jogador[1] > self.rect.y:
-                if 'baixo' not in self.prox_direcao and self.verifica_parede((self.rect.x, self.rect.y + VELOCIDADE)):
-                    self.prox_direcao.append('baixo')
+                self.prox_direcao = 'direita'
+                if self.rect.y > self.pos_jogador[1]:
+                    self.reseta_direcao()
+                    self.direcao['cima'] = True
+                else:
+                    self.reseta_direcao()
+                    self.direcao['baixo'] = True
+        elif self.prioridade == 'esquerda':
+            if self.verifica_parede(self.rect.x - VELOCIDADE, self.rect.y):
+                self.reseta_direcao()
+                self.direcao['esquerda'] = True
             else:
-                if 'cima' not in self.prox_direcao and self.verifica_parede((self.rect.x, self.rect.y - VELOCIDADE)):
-                    self.prox_direcao.append('cima')
-
+                self.prox_direcao = 'esquerda'
+                if self.rect.y > self.pos_jogador[1]:
+                    self.reseta_direcao()
+                    self.direcao['cima'] = True
+                else:
+                    self.reseta_direcao()
+                    self.direcao['baixo'] = True
+        elif self.prioridade == 'cima':
+            if self.verifica_parede(self.rect.x, self.rect.y - VELOCIDADE):
+                self.reseta_direcao()
+                self.direcao['cima'] = True
+            else:
+                self.prox_direcao = 'cima'
+                if self.rect.x > self.pos_jogador[0]:
+                    self.reseta_direcao()
+                    self.direcao['esquerda'] = True
+                else:
+                    self.reseta_direcao()
+                    self.direcao['direita'] = True
+        elif self.prioridade == 'baixo':
+            if self.verifica_parede(self.rect.x, self.rect.y + VELOCIDADE):
+                self.reseta_direcao()
+                self.direcao['baixo'] = True
+            else:
+                self.prox_direcao = 'baixo'
+                if self.rect.x > self.pos_jogador[0]:
+                    self.reseta_direcao()
+                    self.direcao['esquerda'] = True
+                else:
+                    self.reseta_direcao()
+                    self.direcao['direita'] = True
         # tentar fazer a ideia do A* mas dessa vez fazer um lista com as direcoes e não com as posicoes
 
         # for i in range(2):
@@ -356,7 +365,22 @@ class Fantasma(pygame.sprite.Sprite):
         #     self.prox_direcao.append(direcao)
         
 
+    def define_prioridade(self):
+        if abs(self.rect.x - self.pos_jogador[0]) > abs(self.rect.y - self.pos_jogador[1]):
+            if self.rect.x > self.pos_jogador[0]:
+                self.prioridade = 'esquerda'
+            else:
+                self.prioridade = 'direita'
+        else:
+            if self.rect.y > self.pos_jogador[1]:
+                self.prioridade = 'cima'
+            else:
+                self.prioridade = 'baixo'
+
     def update(self):
+
+        self.define_prioridade()
+        self.escolhe_direcao()
 
         if self.direcao['direita']:
             self.rect.x += VELOCIDADE
@@ -372,25 +396,23 @@ class Fantasma(pygame.sprite.Sprite):
         elif self.rect.x > LARGURA_MAPA * BLOCO + MARGEM_X:
             self.rect.x = MARGEM_X
 
-        if self.rect.collidelist(self.grupos['paredes']) != -1:
-            if self.direcao['direita']:
-                self.rect.x -= VELOCIDADE
-                self.direcao_anterior = self.prox_direcao.pop(0)
-                # self.escolhe_direcao()
-            elif self.direcao['esquerda']:
-                self.rect.x += VELOCIDADE
-                self.direcao_anterior = self.prox_direcao.pop(0)
-                # self.escolhe_direcao()
-            elif self.direcao['cima']:
-                self.rect.y += VELOCIDADE
-                self.direcao_anterior = self.prox_direcao.pop(0)
-                # self.escolhe_direcao()
-            elif self.direcao['baixo']:
-                self.rect.y -= VELOCIDADE
-                self.direcao_anterior = self.prox_direcao.pop(0)
+        # if self.rect.collidelist(self.grupos['paredes']) != -1:
+        #     if self.direcao['direita']:
+        #         self.rect.x -= VELOCIDADE
+        #         self.direcao_anterior = self.prox_direcao.pop(0)
+        #         # self.escolhe_direcao()
+        #     elif self.direcao['esquerda']:
+        #         self.rect.x += VELOCIDADE
+        #         self.direcao_anterior = self.prox_direcao.pop(0)
+        #         # self.escolhe_direcao()
+        #     elif self.direcao['cima']:
+        #         self.rect.y += VELOCIDADE
+        #         self.direcao_anterior = self.prox_direcao.pop(0)
+        #         # self.escolhe_direcao()
+        #     elif self.direcao['baixo']:
+        #         self.rect.y -= VELOCIDADE
+        #         self.direcao_anterior = self.prox_direcao.pop(0)
 
-        if not self.prox_direcao:
-            self.escolhe_direcao()
                 # self.escolhe_direcao()
         # if self.celula_alvo:
         #     dx = self.celula_alvo.x - self.rect.x
