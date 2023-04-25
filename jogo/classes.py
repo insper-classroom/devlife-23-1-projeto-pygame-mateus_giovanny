@@ -3,7 +3,7 @@ from constantes import *
 class Jogo:
     def __init__(self):
         pygame.init()
-        self.tela_atual = Fase1()
+        self.tela_atual = Tela_inicial()
 
     def atualiza(self):
         pygame.time.Clock().tick(30)
@@ -25,6 +25,24 @@ class Jogo:
     
     def finaliza(self):
         pygame.quit()
+
+class Tela_inicial:
+    def __init__(self):
+        self.imagem = IMG_TELA_INICIAL
+
+    def atualiza(self):
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                return None
+        return self
+
+    def desenha(self):
+        JANELA.blit(self.imagem,(TAMANHO_JANELA[0]//2 - TAMANHO_IMG_TELA_INICIAL[0]//2 ,TAMANHO_JANELA[1]//2 - TAMANHO_IMG_TELA_INICIAL[1]//2))
+        pygame.draw.rect(JANELA,AZUL,pygame.Rect(356, 403, 324, 75), 0, 100)
+        pygame.draw.rect(JANELA,AZUL,pygame.Rect(433, 352, 172, 41), 0, 100)
+        pygame.draw.rect(JANELA,AZUL,pygame.Rect(417, 486, 203, 41), 0, 100)
+
+        
 
 class Fase1:
     def __init__(self):
