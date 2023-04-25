@@ -1,0 +1,46 @@
+.imagem_nome{
+    width: 50%;
+    height: auto;
+
+    left: 50%;
+    transform: translate(50%)
+}
+
+body{
+    overflow-x: hidden;
+    margin: 50px;
+    padding: 10px;
+    margin-right: 50px;
+
+    background-image: url("C:/Users/giova/github-classroom/insper-classroom/devlife-23-1-projeto-pygame-mateus_giovanny/docs/fotos/tela_fundo_pag.png");
+    background-size: 100% 30%;
+    background-image: url("C:/Users/giova/github-classroom/insper-classroom/devlife-23-1-projeto-pygame-mateus_giovanny/docs/fotos/tela_fundo_nada.png");
+    background-size: 100% 100%;
+}
+p {
+    text-indent: 40px;
+    margin-right: 50px;
+    color: white;
+}
+
+h2 {
+    font-style: italic;
+    color: blue;
+    text-decoration: underline;
+}
+
+.giovanny{
+    color: black;
+}
+
+.mateus{
+    color: black;
+}
+
+.bom_jogo{
+    transform: translate(14%)
+}
+
+.baixe{
+    color: red;
+}
