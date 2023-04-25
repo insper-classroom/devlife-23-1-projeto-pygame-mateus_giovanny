@@ -1,7 +1,5 @@
 import pygame
 from constantes import *
-import math
-import heapq
 class Jogo:
     def __init__(self):
         pygame.init()
@@ -39,7 +37,7 @@ class Fase1:
             }
         self.pos_navegaveis = []
         self.jogador = Jogador(self.grupos)
-        self.fatasma_vermelho = Fantasma(self.grupos, FANTASMA_AMARELO, (LARGURA_MAPA//2 -2) * BLOCO + MARGEM_X +2, (ALTURA_MAPA//2 - 2) * BLOCO + MARGEM_Y +2, self.pos_navegaveis)
+        self.fatasma_vermelho = Fantasma(self.grupos, FANTASMA_AMARELO, (LARGURA_MAPA//2) * BLOCO + MARGEM_X +2, (ALTURA_MAPA//2 -5) * BLOCO + MARGEM_Y +2, self.pos_navegaveis)
         self.le_mapa()
     
     # def gera_mapa(self):
@@ -56,7 +54,7 @@ class Fase1:
     #                     mapa1.write('2')
 
     def le_mapa(self):
-        with open('jogo/mapas/mapa_teste.txt','r') as mapa1:
+        with open('jogo/mapas/mapa1.txt','r') as mapa1:
             for y in range(ALTURA_MAPA):
                 linha = mapa1.readline()
                 for x in range(len(linha)):
@@ -91,10 +89,8 @@ class Fase1:
     
     def atualiza(self):
         self.fatasma_vermelho.pos_jogador = (self.jogador.rect.x,self.jogador.rect.y)
-        # self.fatasma_vermelho.update_caminho()
         self.grupos['all_sprites'].update()
         self.jogador.verifica_direcao_livre()
-        # self.fatasma_vermelho.verifica_direcao_livre()
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return None
@@ -107,6 +103,10 @@ class Fase1:
                     self.jogador.prox_direcao = 'cima'
                 elif evento.key == pygame.K_s:
                     self.jogador.prox_direcao = 'baixo'
+
+        colisao_fantasma = pygame.sprite.spritecollide(self.jogador, self.grupos['fantasmas'], False)
+        for colisao in colisao_fantasma:
+            return None
         
         # if len(self.grupos['bolinhas']) == 0:
         #     return Fase2()
@@ -121,8 +121,8 @@ class Jogador(pygame.sprite.Sprite):
         self.grupos['all_sprites'].add(self)
         self.image = PAC_MAN[0]
         self.rect = self.image.get_rect()
-        self.rect.x = (LARGURA_MAPA//2 +1) * BLOCO + MARGEM_X +2
-        self.rect.y = (ALTURA_MAPA//2 -2) * BLOCO + MARGEM_Y +2
+        self.rect.x = (LARGURA_MAPA//2) * BLOCO + MARGEM_X +2
+        self.rect.y = (ALTURA_MAPA//2) * BLOCO + MARGEM_Y +2
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
         self.prox_direcao = ''
 
@@ -140,10 +140,10 @@ class Jogador(pygame.sprite.Sprite):
             self.image = PAC_MAN[3]
             self.rect.y += VELOCIDADE
 
-        if self.rect.x < MARGEM_X:
-            self.rect.x = LARGURA_MAPA * BLOCO + MARGEM_X
-        elif self.rect.x > LARGURA_MAPA * BLOCO + MARGEM_X:
-            self.rect.x = MARGEM_X
+        if self.rect.x < MARGEM_X+1:
+            self.rect.x = (LARGURA_MAPA-1) * BLOCO + MARGEM_X
+        elif self.rect.x > (LARGURA_MAPA-1) * BLOCO + MARGEM_X:
+            self.rect.x = MARGEM_X+1
 
         if self.rect.collidelist(self.grupos['paredes']) != -1:
             if self.direcao['direita']:
@@ -204,6 +204,7 @@ class Fantasma(pygame.sprite.Sprite):
         self.pos_navegaveis = pos_navegaveis
 
         self.prioridade = ''
+        self.perdido = False
                 
     
     def verifica_parede(self, x, y):
@@ -213,6 +214,74 @@ class Fantasma(pygame.sprite.Sprite):
     
     def reseta_direcao(self):
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
+
+    def mao_direita(self):
+        print(self.prioridade)
+        if self.prioridade == 'direita':
+            if self.verifica_parede(self.rect.x + VELOCIDADE, self.rect.y) and self.posicoes_anteriores != self.prioridade:
+                self.perdido = False
+            elif self.verifica_parede(self.rect.x, self.rect.y - VELOCIDADE) and self.posicoes_anteriores != 'cima':
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'baixo'
+                self.direcao['cima'] = True
+            elif self.verifica_parede(self.rect.x - VELOCIDADE, self.rect.y) and self.posicoes_anteriores != 'esquerda':
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'direita'
+                self.direcao['esquerda'] = True
+            else:
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'cima'
+                self.direcao['baixo'] = True
+
+        elif self.prioridade == 'esquerda':
+            if self.verifica_parede(self.rect.x - VELOCIDADE, self.rect.y) and self.posicoes_anteriores != self.prioridade:
+                self.perdido = False
+            elif self.verifica_parede(self.rect.x, self.rect.y + VELOCIDADE) and self.posicoes_anteriores != 'baixo':
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'cima'
+                self.direcao['baixo'] = True
+            elif self.verifica_parede(self.rect.x + VELOCIDADE, self.rect.y) and self.posicoes_anteriores != 'direita':
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'esquerda'
+                self.direcao['direita'] = True
+            else:
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'baixo'
+                self.direcao['cima'] = True
+
+        elif self.prioridade == 'cima':
+            if self.verifica_parede(self.rect.x, self.rect.y - VELOCIDADE) and self.posicoes_anteriores != self.prioridade:
+                self.perdido = False
+            elif self.verifica_parede(self.rect.x - VELOCIDADE, self.rect.y) and self.posicoes_anteriores != 'esquerda':
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'direita'
+                self.direcao['esquerda'] = True
+            elif self.verifica_parede(self.rect.x, self.rect.y + VELOCIDADE) and self.posicoes_anteriores != 'baixo':
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'cima'
+                self.direcao['baixo'] = True
+            else:
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'esquerda'
+                self.direcao['direita'] = True
+
+        elif self.prioridade == 'baixo':
+            if self.verifica_parede(self.rect.x, self.rect.y + VELOCIDADE) and self.posicoes_anteriores != self.prioridade:
+                self.perdido = False
+            elif self.verifica_parede(self.rect.x + VELOCIDADE, self.rect.y) and self.posicoes_anteriores != 'direita':
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'esquerda'
+                self.direcao['direita'] = True
+            elif self.verifica_parede(self.rect.x, self.rect.y - VELOCIDADE) and self.posicoes_anteriores != 'cima':
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'baixo'
+                self.direcao['cima'] = True
+            else:
+                self.reseta_direcao()
+                self.posicoes_anteriores = 'direita'
+                self.direcao['esquerda'] = True
+
+    #algoritimos de busca em matriz
 
     def escolhe_direcao(self):
         if self.prioridade == 'direita':
@@ -230,10 +299,9 @@ class Fantasma(pygame.sprite.Sprite):
                     self.reseta_direcao()
                     self.direcao['baixo'] = True
                 else:
-                    print(1)
-                    self.posicoes_anteriores = 'direita'
+                    self.perdido = True
                     self.reseta_direcao()
-                    self.direcao['esquerda'] = True
+        
         elif self.prioridade == 'esquerda':
             if self.verifica_parede(self.rect.x - VELOCIDADE, self.rect.y) and self.posicoes_anteriores != 'esquerda':
                 self.posicoes_anteriores = 'direita'
@@ -248,6 +316,10 @@ class Fantasma(pygame.sprite.Sprite):
                     self.posicoes_anteriores = 'cima'
                     self.reseta_direcao()
                     self.direcao['baixo'] = True
+                else:
+                    self.perdido = True
+                    self.reseta_direcao()
+        
         elif self.prioridade == 'cima':
             if self.verifica_parede(self.rect.x, self.rect.y - VELOCIDADE) and self.posicoes_anteriores != 'cima':
                 self.posicoes_anteriores = 'baixo'
@@ -262,6 +334,10 @@ class Fantasma(pygame.sprite.Sprite):
                     self.posicoes_anteriores = 'esquerda'
                     self.reseta_direcao()
                     self.direcao['direita'] = True
+                else:
+                    self.perdido = True
+                    self.reseta_direcao()
+        
         elif self.prioridade == 'baixo':
             if self.verifica_parede(self.rect.x, self.rect.y + VELOCIDADE) and self.posicoes_anteriores != 'baixo':
                 self.posicoes_anteriores = 'cima'
@@ -276,6 +352,9 @@ class Fantasma(pygame.sprite.Sprite):
                     self.posicoes_anteriores = 'esquerda'
                     self.reseta_direcao()
                     self.direcao['direita'] = True
+                else:
+                    self.perdido = True
+                    self.reseta_direcao()
         
     def define_prioridade(self):
         if abs(self.rect.x - self.pos_jogador[0]) > abs(self.rect.y - self.pos_jogador[1]):
@@ -290,9 +369,11 @@ class Fantasma(pygame.sprite.Sprite):
                 self.prioridade = 'baixo'
 
     def update(self):
-
-        self.define_prioridade()
-        self.escolhe_direcao()
+        if self.perdido:
+            self.mao_direita()
+        else:
+            self.define_prioridade()
+            self.escolhe_direcao()
 
         if self.direcao['direita']:
             self.rect.x += VELOCIDADE
@@ -303,10 +384,20 @@ class Fantasma(pygame.sprite.Sprite):
         elif self.direcao['baixo']:
             self.rect.y += VELOCIDADE
 
-        if self.rect.x < MARGEM_X:
-            self.rect.x = LARGURA_MAPA * BLOCO + MARGEM_X
-        elif self.rect.x > LARGURA_MAPA * BLOCO + MARGEM_X:
-            self.rect.x = MARGEM_X
+        if self.rect.x < MARGEM_X+1:
+            self.rect.x = (LARGURA_MAPA-1) * BLOCO + MARGEM_X
+        elif self.rect.x > (LARGURA_MAPA-1) * BLOCO + MARGEM_X:
+            self.rect.x = MARGEM_X+1
+
+        if self.rect.collidelist(self.grupos['paredes']) != -1:
+            if self.direcao['direita']:
+                self.rect.x -= VELOCIDADE
+            elif self.direcao['esquerda']:
+                self.rect.x += VELOCIDADE
+            elif self.direcao['cima']:
+                self.rect.y += VELOCIDADE
+            elif self.direcao['baixo']:
+                self.rect.y -= VELOCIDADE
 
 
 if __name__ == '__main__':
