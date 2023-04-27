@@ -19,23 +19,26 @@ body{
 }
 p {
     text-indent: 40px;
-    margin-right: 50px;
+    margin-right: 500px;
     color: white;
+}
+h1{
+    color: orangered
 }
 
 h2 {
-    font-style: italic;
-    color: blue;
+    font-style: arial;
+    color: orangered;
     text-decoration: underline;
 }
 
-.giovanny{
-    color: black;
+#nomes{
+    color: red;
+}
+#itens{
+    color: white
 }
 
-.mateus{
-    color: black;
-}
 
 .bom_jogo{
     transform: translate(14%)
