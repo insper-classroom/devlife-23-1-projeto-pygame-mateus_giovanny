@@ -1,22 +1,100 @@
-.imagem_nome{
-    width: 50%;
-    height: auto;
-
-    left: 50%;
-    transform: translate(50%)
+*{
+    font-family: 'Braah One', sans-serif;
+    color: #FCD116;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    overflow-x: hidden;
-    margin: 50px;
-    padding: 10px;
-    margin-right: 50px;
+html,body{
+    background-color: #000000;
+    height: 100%;
+}
 
-    background-image: url("C:/Users/giova/github-classroom/insper-classroom/devlife-23-1-projeto-pygame-mateus_giovanny/docs/fotos/tela_fundo_pag.png");
-    background-size: 100% 30%;
-    background-image: url("C:/Users/giova/github-classroom/insper-classroom/devlife-23-1-projeto-pygame-mateus_giovanny/docs/fotos/tela_fundo_nada.png");
+.container{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.clear{
+    clear: both;
+}
+
+header{
+    height: 10vh;
+    width: 100%;
+    padding: 10px;
+    position: fixed;
+    background-color: #FF4500;
+}
+
+.logo{
+    float: left;
+    width: 15%;
+    height: 100%;
+    background-image: url('/docs/fotos/PACMAN_titulo.png');
     background-size: 100% 100%;
 }
+
+.menu-desk ul{
+    float: right;
+    list-style: none;
+    padding-top: 1.5vh;
+}
+
+.menu-desk ul li{
+    display: inline-block;
+    font-size: 16px;
+    margin: 0 5vw;
+    padding: 5px;
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+.menu-desk ul li span{
+    position: absolute;
+    top: 8.5vh;
+    display: inline-block;
+    width: 4.5vw;
+    height: 0.5vh;
+    border-radius: 10px;
+    background-color:  #0000FF;
+}
+
+.menu-desk ul li:nth-of-type(1) span{
+    display: none;
+    left: 22.4vw;
+}
+
+.menu-desk ul li:nth-of-type(2) span{
+    display: none;
+    width: 3.6vw;
+    left: 37.5vw;
+}
+
+.menu-desk ul li:nth-of-type(3) span{
+    display: none;
+    width: 8.6vw;
+    left: 51.7vw;
+}
+
+.menu-desk ul li:nth-of-type(4) span{
+    display: none;
+    width: 5.9vw;
+    left: 71.1vw;
+}
+
+.menu-desk ul li:nth-of-type(5) span{
+    display: none;
+    width: 5.3vw;
+    left: 87.8vw;
+}
+
+.menu-desk ul li:hover{
+    border-radius: 10px;
+    background-color: #FF8C00;
+}
+
 p {
     text-indent: 40px;
     margin-right: 500px;

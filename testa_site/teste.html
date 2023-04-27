@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Braah+One&display=swap" rel="stylesheet">
         <title>Pac Man</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href=C:\Users\giova\github-classroom\insper-classroom\devlife-23-1-projeto-pygame-mateus_giovanny\testa_site\teste.css>
-        <img class="imagem_nome" src="C:\Users\giova\github-classroom\insper-classroom\devlife-23-1-projeto-pygame-mateus_giovanny\docs\fotos\PACMAN_titulo.png" ></h1>
+        <link rel="stylesheet" href='teste.css'>
     </head>
 
-    <body>            
-        "<h1>História do Pacman:</h1> 
+    <body>
+        <header>
+            <div class="logo"></div><!--logo-->
+            <nav class="menu-desk">
+                <ul>
+                    <li onmouseover="document.querySelector('.menu-desk ul li:nth-of-type(1) span').style.display = 'inline-block'" onmouseleave="document.querySelector('.menu-desk ul li:nth-of-type(1) span').style.display = 'none'">História<span></span></li>
+                    <li onmouseover="document.querySelector('.menu-desk ul li:nth-of-type(2) span').style.display = 'inline-block'" onmouseleave="document.querySelector('.menu-desk ul li:nth-of-type(2) span').style.display = 'none'">O Jogo<span></span></li>
+                    <li onmouseover="document.querySelector('.menu-desk ul li:nth-of-type(3) span').style.display = 'inline-block'" onmouseleave="document.querySelector('.menu-desk ul li:nth-of-type(3) span').style.display = 'none'">Desenvolvedores<span></span></li>
+                    <li onmouseover="document.querySelector('.menu-desk ul li:nth-of-type(4) span').style.display = 'inline-block'" onmouseleave="document.querySelector('.menu-desk ul li:nth-of-type(4) span').style.display = 'none'">Como Jogar<span></span></li>
+                    <li onmouseover="document.querySelector('.menu-desk ul li:nth-of-type(5) span').style.display = 'inline-block'" onmouseleave="document.querySelector('.menu-desk ul li:nth-of-type(5) span').style.display = 'none'">Baixe aqui<span></span></li>
+                </ul>
+            </nav><!--menu-desk-->
+            <div class="clear"></div>
+        </header>   
+        <h1>História do Pacman:</h1> 
             <p class="paragrafo"> 
                 Pac man é um jogo do inicio da decada de 80, que se popalarizou por todo o mundo se tornando um dos mais adorados jogos de fliperama do mundo. 
             </p>
