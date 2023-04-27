@@ -12,6 +12,7 @@ class Jogador(pygame.sprite.Sprite):
         self.rect.y = (ALTURA_MAPA//2) * BLOCO + MARGEM_Y +2
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
         self.prox_direcao = ''
+        self.comedor = False
 
     def update(self):
         if self.direcao['direita']:
@@ -49,6 +50,7 @@ class Jogador(pygame.sprite.Sprite):
         index = self.rect.collidelist(self.grupos['come_fantasma'])
         if index != -1:
             del self.grupos['come_fantasma'][index]
+
             
 
     def reseta_direcao(self):
