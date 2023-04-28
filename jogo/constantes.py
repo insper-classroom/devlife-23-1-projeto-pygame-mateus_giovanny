@@ -16,6 +16,9 @@ IMG_TELA_INSTRUCOES = pygame.transform.scale(pygame.image.load('jogo/assets\img/
 IMG_TELA_PLACARES = pygame.transform.scale(pygame.image.load('jogo/assets/img/tela_pontuação.png'),TAMANHO_IMG_TELA_INICIAL)
 IMG_TELA_GAME_OVER_1 = pygame.transform.scale(pygame.image.load('jogo/assets\img\TELA_GAME_OVER._1.png'),(700, 760))
 FONTE = 'jogo/fontes\BraahOne-Regular.ttf' 
+IMG_TELA_INSTRUCOES = pygame.transform.scale(pygame.image.load('jogo/assets/img/tela_instruções.png'),TAMANHO_IMG_TELA_INICIAL)
+IMG_TELA_PLACARES = pygame.transform.scale(pygame.image.load('jogo/assets/img/tela_pontuação.png'),TAMANHO_IMG_TELA_INICIAL)
+IMG_TELA_INICIAL = pygame.transform.scale(pygame.image.load('jogo/assets\img/tela_inicio_quadrada_2_tentativa.png'),TAMANHO_IMG_TELA_INICIAL)
 
 #cores
 PRETO = (0,0,0)

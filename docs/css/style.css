@@ -33,7 +33,7 @@ header{
     float: left;
     width: 15%;
     height: 100%;
-    background-image: url('/docs/fotos/PACMAN_titulo.png');
+    background-image: url('../fotos/PACMAN_titulo.png');
     background-size: 100% 100%;
     cursor: pointer;
 }
@@ -61,39 +61,12 @@ header{
     background-color: #FF8C00;
 }
 
-.menu-mobile{
-    display: none;
-}
-
-.menu-mobile ul{
-    background-color: #FF4500;
-    float: right;
-    list-style: none;
-    width: 100%;
-    margin-top: 1%;
-    text-align: center;
-}
-
-.menu-mobile ul li{
-    font-size: 16px;
-    padding: 10px;
-    cursor: pointer;
-    border-bottom: solid 1px #000000;
-}
-
-.fa-bars, .fa-x{
-    margin-top: 1%;
-    font-size: 32px;
-    float: right;
-}
-
-
 section{
     position: relative;
     top: 10vh;
     width: 100%;
     height: 100%;
-    background-image: url('/docs/fotos/corre_pac.gif');
+    background-image: url('../fotos/corre_pac.gif');
     background-size: cover;
     background-position: center;
 }
@@ -108,7 +81,7 @@ section{
 .gif-jogo{
     width: 100%;
     height: 75vh;
-    background-image: url('/docs/fotos/corre_pac.gif');
+    background-image: url('../fotos/corre_pac.gif');
     background-position: center;
     background-size: cover;
     position: relative;
@@ -127,7 +100,7 @@ section{
 .mini-logo{
     width: 25%;
     height: 15%;
-    background-image: url("/docs/fotos/PACMAN_titulo.png");
+    background-image: url("../fotos/PACMAN_titulo.png");
     background-position: center;
     background-size: 100% 100%;
     position: relative;
@@ -168,6 +141,14 @@ section:nth-of-type(2) p{
     color: white;
     text-align: justify;
 }
+
+/* section:nth-of-type(3) td{
+    color: white;
+}
+
+section:nth-of-type(3) tbody{
+    border: solid white 2px;
+} */
 
 #log-table {
     margin-top: 10px;
@@ -218,13 +199,13 @@ section:nth-of-type(4) .desenvolvedor{
 }
 
 .mateus{
-    background-image: url('/docs/fotos/foto_avatar_mateus.jpg');
+    background-image: url('../fotos/foto_avatar_mateus.jpg');
     background-size: cover;
     background-position: center;
 }
 
 .giovanny{
-    background-image: url('/docs/fotos/foto_avatar_giovanny.jpg');
+    background-image: url('../fotos/foto_avatar_giovanny.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -274,16 +255,16 @@ section:nth-of-type(4) i{
 }
 
 .passo1{
-    background-image: url('/docs/fotos/passo1-python.jpg');
+    background-image: url('../fotos/passo1-python.jpg');
 }
 .passo2{
-    background-image: url('/docs/fotos/passo2-python.jpg');
+    background-image: url('../fotos/passo2-python.jpg');
 }
 .passo3{
-    background-image: url('/docs/fotos/passo3-python.jpg');
+    background-image: url('../fotos/passo3-python.jpg');
 }
 .passo4{
-    background-image: url('/docs/fotos/passo4-python.jpg');
+    background-image: url('../fotos/passo4-python.jpg');
 }
 
 footer{
@@ -296,13 +277,4 @@ footer{
 footer p{
     padding-top: calc(4.5vh - 8px);
     text-align: center;
-}
-
-@media screen and (max-width: 1280px){
-    .menu-desk{
-        display: none;
-    }
-    .menu-mobile {
-        display: block;
-      }
 }
