@@ -41,60 +41,52 @@ header{
 .menu-desk ul{
     float: right;
     list-style: none;
+    width: 85%;
     padding-top: 1.5vh;
+    text-align: right;
 }
 
 .menu-desk ul li{
     display: inline-block;
+    margin-right: -4px;
     font-size: 16px;
-    margin: 0 5vw;
+    margin: 0 5%;
     padding: 5px;
     padding-top: 10px;
     cursor: pointer;
-}
-
-.menu-desk ul li span{
-    position: absolute;
-    top: 8.5vh;
-    display: inline-block;
-    height: 0.5vh;
-    border-radius: 10px;
-    background-color:  #0000FF;
-}
-
-.menu-desk ul li:nth-of-type(1) span{
-    display: none;
-    width: 3.7%;
-    left: 22.2%;
-}
-
-.menu-desk ul li:nth-of-type(2) span{
-    display: none;
-    width: 4.8%;
-    left: 36.7%;
-}
-
-.menu-desk ul li:nth-of-type(3) span{
-    display: none;
-    width: 8.6%;
-    left: 52.4%;}
-
-.menu-desk ul li:nth-of-type(4) span{
-    display: none;
-    width: 6%;
-    left: 71.9%;
-}
-
-.menu-desk ul li:nth-of-type(5) span{
-    display: none;
-    width: 5.5%;
-    left: 88.7%;
 }
 
 .menu-desk ul li:hover{
     border-radius: 10px;
     background-color: #FF8C00;
 }
+
+.menu-mobile{
+    display: none;
+}
+
+.menu-mobile ul{
+    background-color: #FF4500;
+    float: right;
+    list-style: none;
+    width: 100%;
+    margin-top: 1%;
+    text-align: center;
+}
+
+.menu-mobile ul li{
+    font-size: 16px;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: solid 1px #000000;
+}
+
+.fa-bars, .fa-x{
+    margin-top: 1%;
+    font-size: 32px;
+    float: right;
+}
+
 
 section{
     position: relative;
@@ -176,14 +168,6 @@ section:nth-of-type(2) p{
     color: white;
     text-align: justify;
 }
-
-/* section:nth-of-type(3) td{
-    color: white;
-}
-
-section:nth-of-type(3) tbody{
-    border: solid white 2px;
-} */
 
 #log-table {
     margin-top: 10px;
@@ -312,4 +296,13 @@ footer{
 footer p{
     padding-top: calc(4.5vh - 8px);
     text-align: center;
+}
+
+@media screen and (max-width: 1280px){
+    .menu-desk{
+        display: none;
+    }
+    .menu-mobile {
+        display: block;
+      }
 }
