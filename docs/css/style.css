@@ -33,7 +33,7 @@ header{
     float: left;
     width: 15%;
     height: 100%;
-    background-image: url('/docs/fotos/PACMAN_titulo.png');
+    background-image: url('docs/fotos/PACMAN_titulo.png');
     background-size: 100% 100%;
     cursor: pointer;
 }
@@ -101,7 +101,7 @@ section{
     top: 10vh;
     width: 100%;
     height: 100%;
-    background-image: url('/docs/fotos/corre_pac.gif');
+    background-image: url('docs/fotos/corre_pac.gif');
     background-size: cover;
     background-position: center;
 }
@@ -116,7 +116,7 @@ section{
 .gif-jogo{
     width: 100%;
     height: 75vh;
-    background-image: url('/docs/fotos/corre_pac.gif');
+    background-image: url('docs/fotos/corre_pac.gif');
     background-position: center;
     background-size: cover;
     position: relative;
@@ -135,7 +135,7 @@ section{
 .mini-logo{
     width: 25%;
     height: 15%;
-    background-image: url("/docs/fotos/PACMAN_titulo.png");
+    background-image: url("docs/fotos/PACMAN_titulo.png");
     background-position: center;
     background-size: 100% 100%;
     position: relative;
@@ -234,13 +234,13 @@ section:nth-of-type(4) .desenvolvedor{
 }
 
 .mateus{
-    background-image: url('/docs/fotos/foto_avatar_mateus.jpg');
+    background-image: url('docs/fotos/foto_avatar_mateus.jpg');
     background-size: cover;
     background-position: center;
 }
 
 .giovanny{
-    background-image: url('/docs/fotos/foto_avatar_giovanny.jpg');
+    background-image: url('docs/fotos/foto_avatar_giovanny.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -290,16 +290,16 @@ section:nth-of-type(4) i{
 }
 
 .passo1{
-    background-image: url('/docs/fotos/passo1-python.jpg');
+    background-image: url('docs/fotos/passo1-python.jpg');
 }
 .passo2{
-    background-image: url('/docs/fotos/passo2-python.jpg');
+    background-image: url('docs/fotos/passo2-python.jpg');
 }
 .passo3{
-    background-image: url('/docs/fotos/passo3-python.jpg');
+    background-image: url('docs/fotos/passo3-python.jpg');
 }
 .passo4{
-    background-image: url('/docs/fotos/passo4-python.jpg');
+    background-image: url('docs/fotos/passo4-python.jpg');
 }
 
 footer{
