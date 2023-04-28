@@ -11,7 +11,8 @@ class Tela_placares:
                 return None
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 if 609>= evento.pos[0] >= 416 and 735 >= evento.pos[1] >=668:
-                    return None
+                    from classes.Tela_inicial import Tela_inicial
+                    return Tela_inicial()
         return self
 
     def desenha(self):

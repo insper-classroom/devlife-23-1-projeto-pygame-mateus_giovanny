@@ -15,6 +15,7 @@ class Jogador(pygame.sprite.Sprite):
         self.comedor = False
 
     def update(self):
+        self.pontuacao = 0
         if self.direcao['direita']:
             self.image = PAC_MAN[0]
             self.rect.x += VELOCIDADE
@@ -46,6 +47,7 @@ class Jogador(pygame.sprite.Sprite):
         index = self.rect.collidelist(self.grupos['bolinhas'])
         if index != -1:
             del self.grupos['bolinhas'][index]
+            self.pontuacao += 10
 
         index = self.rect.collidelist(self.grupos['come_fantasma'])
         if index != -1:

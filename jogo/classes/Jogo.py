@@ -1,11 +1,12 @@
 import pygame
 from constantes import *
-from classes.Tela_placares import Tela_placares
+from classes.Tela_inicial import Tela_inicial
 
 class Jogo:
     def __init__(self):
         pygame.init()
-        self.tela_atual = Tela_placares()
+        self.tela_atual = Tela_inicial()
+        self.pontucao = 0
 
     def atualiza(self):
         pygame.time.Clock().tick(30)

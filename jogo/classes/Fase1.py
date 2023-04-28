@@ -3,8 +3,10 @@ from constantes import *
 from classes.Jogador import Jogador
 from classes.Fantasma import Fantasma
 
+
+
 class Fase1:
-    def __init__(self):
+    def __init__(self,pontuacao):
         self.grupos = {
             'all_sprites': pygame.sprite.Group(),
             'paredes': [],
@@ -18,8 +20,9 @@ class Fase1:
             'tempo': 0
             },
             'delta_t': 0,
-            't0': 0
-        }
+            't0': 0,
+            'pontuacao' : pontuacao
+            }
         self.jogador = Jogador(self.grupos)
         self.fatasma_vermelho = Fantasma(self.grupos, FANTASMA_AMARELO, (LARGURA_MAPA//2) * BLOCO + MARGEM_X +2, (ALTURA_MAPA//2 -5) * BLOCO + MARGEM_Y +2)
         self.le_mapa()
@@ -57,7 +60,12 @@ class Fase1:
                         rect = pygame.Rect(x * BLOCO + MARGEM_X, y * BLOCO + MARGEM_Y, BLOCO, BLOCO//2)
                         self.grupos['paredes'].append(rect)
 
+    def text2image(self, text):
+        fonte = pygame.font.Font(FONTE, 20)
+        return fonte.render(text, True, BRANCO)
+
     def desenha(self):
+        JANELA.blit(self.text2image(f"Pontuação: {str(self.estado['pontuacao'])}"), (0,0))
         for parede in self.grupos['paredes']:
             if parede.height == BLOCO//2:
                 pygame.draw.rect(JANELA, BRANCO, parede)
@@ -68,7 +76,8 @@ class Fase1:
         for come_fantasma in self.grupos['come_fantasma']:
             pygame.draw.rect(JANELA, AMARELO_PONTOS, come_fantasma, 0, BLOCO // 2)
         self.grupos['all_sprites'].draw(JANELA)
-    
+
+
     def atualiza(self):
         t1 = pygame.time.get_ticks()
         self.estado['delta_t'] = (t1 - self.estado['t0']) / 1000
@@ -113,6 +122,9 @@ class Fase1:
                     self.jogador.prox_direcao = 'baixo'
         colisao_fantasma = pygame.sprite.spritecollide(self.jogador, self.grupos['fantasmas'], False)
 
+        if self.jogador.pontuacao != 0:
+            self.estado['pontuacao'] += self.jogador.pontuacao
+
         if self.fatasma_vermelho.morto:
             self.fatasma_vermelho.fugindo = False
 
@@ -121,9 +133,12 @@ class Fase1:
                 self.fatasma_vermelho.morto = True
         else:
             for colisao in colisao_fantasma:
-                return None
+                print (self.estado['pontuacao'])
+                from classes.Tela_game_over import Tela_game_over
+                return Tela_game_over(self.estado['pontuacao'])
         
         if len(self.grupos['bolinhas']) == 0:
-            return None
+
+            return Fase1(self.estado['pontuacao'])
 
         return self
