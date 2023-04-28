@@ -1,60 +1,136 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Braah+One&family=Press+Start+2P&display=swap" rel="stylesheet">
         <title>Pac Man</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href=https://insper-classroom.github.io/devlife-23-1-projeto-pygame-mateus_giovanny/pagina.css>
-        <h1 class="imagem_nome">
-            <img src="https://insper-classroom.github.io/devlife-23-1-projeto-pygame-mateus_giovanny\fotos\pacman_titulo.jpg" ></h1>
-        </head>
-        <body>
-            
-            <h3>História:</h3> 
-            <p> Pac man é um jogo do inicio da decada de 80, que se popalarizou por todo o mundo se tornando um dos mais adorados jogos de fliperama do mundo. 
-            </p>
+        <link rel="stylesheet" href='css/style.css'>
+    </head>
 
-            <h3>Entenda O jogo</h3>
-            <img src="https://insper-classroom.github.io/devlife-23-1-projeto-pygame-mateus_giovanny/fotos\corre_pac.gif" >
-            <p class="paragrafo_entenda_o_jogo">
-                Terão 4 fantasmas que poderão fazer você perder. Cada fantasma tem sua função. O vermelho, por exemplo, irá tentar
-                te seguir durante toda a partida, até conseguir te matar. Seu objetivo é comer todas as comidinhas pelo mapa até acabar
+    <body>
+        <header>
+            <div onclick="scrollToContent('Home')" class="logo"></div><!--logo-->
+            <nav class="menu-desk">
+                <ul>
+                    <li onclick="scrollToContent('Jogo')" onmouseover="document.querySelector('.menu-desk ul li:nth-of-type(1) span').style.display = 'inline-block'" onmouseleave="document.querySelector('.menu-desk ul li:nth-of-type(1) span').style.display = 'none'">O Jogo<span></span></li>
+                    <li onclick="scrollToContent('Log')" onmouseover="document.querySelector('.menu-desk ul li:nth-of-type(2) span').style.display = 'inline-block'" onmouseleave="document.querySelector('.menu-desk ul li:nth-of-type(2) span').style.display = 'none'">Histórico<span></span></li>
+                    <li onclick="scrollToContent('Desenvolvedores')" onmouseover="document.querySelector('.menu-desk ul li:nth-of-type(3) span').style.display = 'inline-block'" onmouseleave="document.querySelector('.menu-desk ul li:nth-of-type(3) span').style.display = 'none'">Desenvolvedores<span></span></li>
+                    <li onclick="scrollToContent('passo-a-passo')" onmouseover="document.querySelector('.menu-desk ul li:nth-of-type(4) span').style.display = 'inline-block'" onmouseleave="document.querySelector('.menu-desk ul li:nth-of-type(4) span').style.display = 'none'">Como Jogar<span></span></li>
+                    <li onclick="scrollToContent('Baixar')" onmouseover="document.querySelector('.menu-desk ul li:nth-of-type(5) span').style.display = 'inline-block'" onmouseleave="document.querySelector('.menu-desk ul li:nth-of-type(5) span').style.display = 'none'">Baixe aqui<span></span></li>
+                </ul>
+            </nav><!--menu-desk-->
+            <div class="clear"></div>
+        </header>
+        <section id="Home">
+            <div class="overlay">
+                <div class="container">
+                    <div class="gif-jogo">
+                        <div class="logo-chamada">
+                            <div class="mini-logo"></div>
+                            <input onclick="scrollToContent('Baixar')" type="button" value="BAIXE AQUI" class="botao-chamada">
+                        </div><!--logo-chamada-->
+                    </div><!--gif-jogo-->
+                </div><!--container-->
+            </div><!--overlay-->
+        </section>
+        <section id="Jogo">
+            <div class="container">
+                <h1>Entenda o jogo</h1>
+                <p>Pac man é um jogo do inicio da decada de 80, que se popalarizou por todo o mundo se tornando um dos mais adorados jogos de fliperama do mundo.<br>
+                Terão 4 fantasmas que fazem você perder. Cada fantasma tem sua função. O vermelho, por exemplo, irá tentar
+                te seguir durante toda a partida, até conseguir te pegar. Seu objetivo é comer todas as comidinhas pelo mapa até acabar
                 acumulando o máximo de pontos. O jogo só encerra quando você perder todas suas vidas, mostrando sua pontuação e te dando
-                a opção de salva-lá em seu historico, caso a mesma esteja entre as 5 maiores. <br>
-               
-            </p>
-            <ul>
-                <li>O item "cereja" 🍒 lhe dará o dobro de pontos por 10 segundos;</li>
-                <li>O item "raio" ⚡ lhe deixará com uma velocidade maior que a tradicional;</li>
-                <li>O item "morango" 🍓 lhe dará 10% (dez porcento)de sua atual pontuação;</li>
-                <li>O item "come monstro"⚪ lhe dará 10 segundos para comer o maximo de fantasmas possiveis, dando 200(duzentos),
-                    400(quatrocentos), 800(oitocentos) e 1600(mil e seissentos) pontos, respectivamente, para cada fantasma comido durante esse periodo. </li>
-            </ul>
+                a opção de salva-lá em seu historico, caso a mesma esteja entre as 5 maiores.</p>
+                <p>
+                    O item "cereja" 🍒 lhe dará o dobro de pontos por 10 segundos.<br>
+                    O item "raio" ⚡ lhe deixará com uma velocidade maior que a tradicional.<br>
+                    O item "morango" 🍓 lhe dará 10% (dez porcento)de sua atual pontuação.<br>
+                    O item "come fantasma"⚪ lhe dará 10 segundos para comer o maximo de fantasmas possiveis, dando 200,
+                    400, 800 e 1600 pontos, respectivamente, para cada fantasma comido durante esse periodo.
+                </p>
+            </div><!--container-->
+        </section>
 
-            <h3>Como jogar:</h3>
-            <p class="paragrafo_1">
-                O objetivo do jogo é comer todos os pontos espalhados pela tela sem se colidir com os fantasmas. Acumulando o máximo de pontos possiveis. <br>
-                Começando com 3 vidas, cada vez que o fantasma te encontra você perderá uma, porém você poderá matar o fantasma por um determinado tempo, assim que comer a "Come-Fantasma"(uma
-                bola maior que as demais), os itens <b>"cereja"</b>, <b>"raio"</b> e <b>"morango"</b> darão : dobro de pontos por 10 segundos; velocidade aumentada por 10 segundos; e 800 pontos, respectivamente.
-            </p>
-            <p>
-                Use as teclas  <b>⬅️ ⬆️ ⬇️ ➡️  </b>
-            </p>
-            <h3 class="giovanny">Giovanny Russo</h3>
-            <p class="paragrafo_giovanny">
-                Olá, me chamo Giovanny Russo, sou um dos programadores e criadores do InsPecMan e deste site. 
-                Sou de Praia Grande, litoral paulista, tenho 20 (vinte) anos e estou cursando o primeiro semestre de ciências
-                da computação (CComp) no Insper. <br>
-                segue abaixo links para acesso ao meu perfil do linkedin e github, respectivamente: <br>
-            </p>
-            
-            <a target="_blank" href="https://www.linkedin.com/in/giovanny-russo-8a8b261b2/">Linkedin</a>
-            
-         
-            <h3 class="mateus">Mateus Pereira</h3>
+        <section id="Log">
+            <div class="container">
+                <h1>Log de Desenvolvimento do Git</h1>
+                <table id="log-table">
+                <thead>
+                    <tr>
+                    <th>Autor</th>
+                    <th>Data</th>
+                    <th>Mensagem</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                </table>
+            </div><!--container-->
+        </section>
 
-            <h2>BAIXE O JOGO:</h2>
-            <a target="_blank" href="https://seusite.com/arquivo.zip" download>InsPacMan</a>
+        <section id="Desenvolvedores">
+            <div class="container">
+                <h1>Desenvolvedores</h1>
+                <div class="container-desenvolvedores">
+                    <div class="desenvolvedor">
+                        <div class="avatar mateus"></div><!--avatar-->
+                        <div class="nome"><h2>Mateus Moreira</h2></div>
+                        <div class="descricao">
+                            <p>Olá, meu nome é Mateus, tenho 18 anos e sou um dos desenvolvedores deste jogo que é uma réplica do Pac-Man, bem como deste site. 
+                                Sou do Rio de Janeiro e estou cursando o primeiro semestre de Ciência da Computação no Insper.</p>
+                        </div><!--descricao-->
+                        <div class="redes-sociais">
+                            <a target="_blank" href="https://www.linkedin.com/in/mateus-moreira-8a8bb1214/"><i class="fa-brands fa-linkedin"></i></a>
+                            <a target="_blank" href="https://github.com/mmp052"><i class="fa-brands fa-github"></i></a>
+                        </div>
+                    </div><!--desenvolvedor-->
+                    <div class="desenvolvedor">
+                        <div class="avatar giovanny"></div><!--avatar-->
+                        <div class="nome"><h2>Giovanny Russo</h2></div>
+                        <div class="descricao">
+                            <p>Olá, me chamo Giovanny Russo, sou um dos programadores e criadores do InsPacMan e deste site.
+                                Sou de Praia Grande, litoral paulista, tenho 20 (vinte) anos e estou cursando o primeiro semestre de ciência
+                                da computação (CComp) no Insper.</p>
+                        </div><!--descricao-->
+                        <div class="redes-sociais">
+                            <a target="_blank" href="https://www.linkedin.com/in/giovanny-russo-8a8b261b2/"><i class="fa-brands fa-linkedin"></i></a>
+                            <a target="_blank" href="https://github.com/giovannyjvr"><i class="fa-brands fa-github"></i></a>
+                        </div>
+                    </div><!--desenvolvedor-->
+                </div><!--container-desenvolvedores-->
+            </div><!--container-->
+        </section>
 
-            <h1 class="bom_jogo">BOM JOGO!👍😉</h1>
-            <img src="https://insper-classroom.github.io/devlife-23-1-projeto-pygame-mateus_giovanny\fotos\pac_dando_joinha.gif" >
-            
+        <section id="passo-a-passo">
+            <div class="container">
+                <h1>Como jogar</h1>
+                <div class="passo-a-passo">
+                    <h3>Instalando o python :</h3>
+                    <p>Primeiramente, acesse o site oficial do Python <a target="_blank" href="https://www.python.org/downloads/">aqui</a> e faça o download do instalador de acordo com o seu sistema operacional (Windows, Mac ou Linux).</p>
+                    <div class="img-passo-python passo1"></div>
+                    <p>Após baixar o instalador, execute-o e siga as instruções do assistente de instalação. É importante escolher a opção de "Adicionar Python ao PATH" durante a instalação, para que o Python possa ser acessado facilmente a partir do terminal (linha de comando).</p>
+                    <div class="img-passo-python passo2"></div>
+                    <p>Depois de concluir a instalação, abra o terminal (no Windows, pressione a tecla Windows + R e digite "cmd" na caixa de diálogo; no Mac, abra o Terminal no Launchpad ou na pasta Aplicativos > Utilitários).</p>
+                    <div class="img-passo-python passo3"></div>
+                    <p>Digite "python" no terminal e pressione Enter. Se tudo estiver correto, você deverá ver a versão do Python instalada e o prompt de comando do Python (>>>).</p>
+                    <div class="img-passo-python passo4"></div>
+                    <p>Parabéns, você instalou com sucesso o Python no seu computador! Agora você tem tudo quase tudo que precisa para jogar o jogo,
+                        só falta o baixar o zip do jogo.
+                    </p>
+                    <br>
+                </div><!--passo-a-passo-->
+            </div><!--container-->
+        </section>
+
+        <section id="Baixar">
+            <h1>Baixar zip do jogo :</h1>
+                    <p>Clique <a target="_blank" href="https://github.com/insper-classroom/devlife-23-1-projeto-pygame-mateus_giovanny">aqui</a> para ir no repositório git do projeto, siga o readme para baixar e se divita jogando.</p>
+        </section>
+        <footer>
+            <p>Copyright © 2023 Todos os direitos reservados.</p>
+        </footer>
+    </body>
+    <script src="js/script.js"></script>
+    <script src="https://kit.fontawesome.com/09b54b9e45.js" crossorigin="anonymous"></script>
+</html>

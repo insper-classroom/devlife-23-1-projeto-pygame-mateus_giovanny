@@ -11,6 +11,8 @@ JANELA = pygame.display.set_mode(TAMANHO_JANELA)
 MARGEM_X = TAMANHO_JANELA[0]/2 - LARGURA_MAPA*BLOCO/2
 MARGEM_Y = TAMANHO_JANELA[1]/2 - ALTURA_MAPA*BLOCO/2
 TAMANHO_IMG_TELA_INICIAL = (TAMANHO_JANELA[1]*0.6,TAMANHO_JANELA[1])
+IMG_TELA_INSTRUCOES = pygame.transform.scale(pygame.image.load('jogo/assets/img/tela_instruções.png'),TAMANHO_IMG_TELA_INICIAL)
+IMG_TELA_PLACARES = pygame.transform.scale(pygame.image.load('jogo/assets/img/tela_pontuação.png'),TAMANHO_IMG_TELA_INICIAL)
 IMG_TELA_INICIAL = pygame.transform.scale(pygame.image.load('jogo/assets\img/tela_inicio_quadrada_2_tentativa.png'),TAMANHO_IMG_TELA_INICIAL)
 
 #cores
