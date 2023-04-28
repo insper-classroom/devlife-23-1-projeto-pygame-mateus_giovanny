@@ -35,5 +35,13 @@ function formatDate(string, format) {
     return format.replace(/dd|mm|aaaa/gi, matched => map[matched])
 }
 
+function scrollToContent(id) {
+    const contentSection = document.getElementById(id);
+    var menu = document.querySelector('header')
+    window.scrollTo({
+      top: contentSection.offsetTop - menu.offsetHeight,
+      behavior: 'smooth'
+    });
+}
 // Chama a função para gerar a tabela quando a página é carregada
 gerarLogDeDesenvolvimento();

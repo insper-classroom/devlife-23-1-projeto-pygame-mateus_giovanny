@@ -35,6 +35,7 @@ header{
     height: 100%;
     background-image: url('/docs/fotos/PACMAN_titulo.png');
     background-size: 100% 100%;
+    cursor: pointer;
 }
 
 .menu-desk ul{
@@ -162,7 +163,7 @@ section{
     border: solid #FF8C00 3px;
 }
 
-section:nth-of-type(2), section:nth-of-type(3){
+section:nth-of-type(2), section:nth-of-type(3), section:nth-of-type(4), section:nth-of-type(5), section:nth-of-type(6){
     text-align: center;
     height: auto;
     padding: 10px;
@@ -170,7 +171,7 @@ section:nth-of-type(2), section:nth-of-type(3){
 }
 
 section:nth-of-type(2) p{
-    margin-top: 10px;
+    margin-top: 20px;
     font-size: 16px;
     color: white;
     text-align: justify;
@@ -209,18 +210,106 @@ section:nth-of-type(3) tbody{
     background-color: #FF4500;
 }
 
-#nomes{
-    color: red;
-}
-#itens{
-    color: white
+section:nth-of-type(4) .container{
+    text-align: center;
 }
 
-
-.bom_jogo{
-    transform: translate(14%)
+section:nth-of-type(4) .container-desenvolvedores{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
 }
 
-.baixe{
-    color: red;
+section:nth-of-type(4) .desenvolvedor{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar{
+    width: 8vw;
+    height: 8vw;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.mateus{
+    background-image: url('/docs/fotos/foto_avatar_mateus.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.giovanny{
+    background-image: url('/docs/fotos/foto_avatar_giovanny.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+section:nth-of-type(4) .descricao{
+    padding: 10px;
+}
+
+section:nth-of-type(4) .descricao p{
+    color: white;
+    text-align: justify;
+}
+
+section:nth-of-type(4) i{
+    font-size: 30px;
+    margin: 20px;
+}
+
+.fa-linkedin{
+    color: #0A66C2;
+}
+
+.fa-github{
+    color: #24292E;
+}
+
+.passo-a-passo{
+    margin: 20px 0;
+    text-align: justify;
+}
+
+.passo-a-passo p, section:nth-of-type(6) p{
+    color: white;
+    margin: 10px 0;
+}
+
+.passo-a-passo a, section:nth-of-type(6) a{
+    color: #FF4500;
+    text-decoration: none;
+    font-style: italic;
+}
+
+.img-passo-python{
+    width: 100%;
+    height: 75vh;
+    background-size: 100% 100%;
+}
+
+.passo1{
+    background-image: url('/docs/fotos/passo1-python.jpg');
+}
+.passo2{
+    background-image: url('/docs/fotos/passo2-python.jpg');
+}
+.passo3{
+    background-image: url('/docs/fotos/passo3-python.jpg');
+}
+.passo4{
+    background-image: url('/docs/fotos/passo4-python.jpg');
+}
+
+footer{
+    margin-top: 10vh;
+    width: 100%;
+    height: 9vh;
+    background-color: #FF4500;
+}
+
+footer p{
+    padding-top: calc(4.5vh - 8px);
+    text-align: center;
 }
