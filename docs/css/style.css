@@ -1,0 +1,315 @@
+*{
+    font-family: 'Braah One', sans-serif;
+    color: #FCD116;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body{
+    background-color: #000000;
+    height: 100%;
+}
+
+.container{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.clear{
+    clear: both;
+}
+
+header{
+    height: 10vh;
+    width: 100%;
+    padding: 10px;
+    position: fixed;
+    background-color: #FF4500;
+    z-index: 2;
+}
+
+.logo{
+    float: left;
+    width: 15%;
+    height: 100%;
+    background-image: url('/docs/fotos/PACMAN_titulo.png');
+    background-size: 100% 100%;
+    cursor: pointer;
+}
+
+.menu-desk ul{
+    float: right;
+    list-style: none;
+    padding-top: 1.5vh;
+}
+
+.menu-desk ul li{
+    display: inline-block;
+    font-size: 16px;
+    margin: 0 5vw;
+    padding: 5px;
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+.menu-desk ul li span{
+    position: absolute;
+    top: 8.5vh;
+    display: inline-block;
+    height: 0.5vh;
+    border-radius: 10px;
+    background-color:  #0000FF;
+}
+
+.menu-desk ul li:nth-of-type(1) span{
+    display: none;
+    width: 3.7%;
+    left: 22.2%;
+}
+
+.menu-desk ul li:nth-of-type(2) span{
+    display: none;
+    width: 4.8%;
+    left: 36.7%;
+}
+
+.menu-desk ul li:nth-of-type(3) span{
+    display: none;
+    width: 8.6%;
+    left: 52.4%;}
+
+.menu-desk ul li:nth-of-type(4) span{
+    display: none;
+    width: 6%;
+    left: 71.9%;
+}
+
+.menu-desk ul li:nth-of-type(5) span{
+    display: none;
+    width: 5.5%;
+    left: 88.7%;
+}
+
+.menu-desk ul li:hover{
+    border-radius: 10px;
+    background-color: #FF8C00;
+}
+
+section{
+    position: relative;
+    top: 10vh;
+    width: 100%;
+    height: 100%;
+    background-image: url('/docs/fotos/corre_pac.gif');
+    background-size: cover;
+    background-position: center;
+}
+
+.overlay{
+    width: 100%;
+    height: 100%;
+    background-color: #000000c4;
+    backdrop-filter: blur(15px);
+}
+
+.gif-jogo{
+    width: 100%;
+    height: 75vh;
+    background-image: url('/docs/fotos/corre_pac.gif');
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    top: 9vh;
+}
+
+.logo-chamada{
+    width: 96%;
+    height: 104%;
+    border: solid #FF4500 2px;
+    position: relative;
+    bottom: 2%;
+    left: 2%;
+}
+
+.mini-logo{
+    width: 25%;
+    height: 15%;
+    background-image: url("/docs/fotos/PACMAN_titulo.png");
+    background-position: center;
+    background-size: 100% 100%;
+    position: relative;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.botao-chamada{
+    font-size: 20px;
+    width: 15%;
+    height: 10%;
+    background-color: #FF4500;
+    cursor: pointer;
+    border: none;
+    position: relative;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 20px;
+    padding-top: 1%;
+}
+
+.botao-chamada:hover{
+    border: solid #FF8C00 3px;
+}
+
+section:nth-of-type(2), section:nth-of-type(3), section:nth-of-type(4), section:nth-of-type(5), section:nth-of-type(6){
+    text-align: center;
+    height: auto;
+    padding: 10px;
+    background-image: none;
+}
+
+section:nth-of-type(2) p{
+    margin-top: 20px;
+    font-size: 16px;
+    color: white;
+    text-align: justify;
+}
+
+/* section:nth-of-type(3) td{
+    color: white;
+}
+
+section:nth-of-type(3) tbody{
+    border: solid white 2px;
+} */
+
+#log-table {
+    margin-top: 10px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#log-table th,
+#log-table td {
+    border: 1px solid #FF4500;
+    padding: 8px;
+    text-align: justify;
+}
+
+#log-table th{
+    text-align: center;
+}
+
+#log-table td{
+    color: white;
+}
+
+#log-table th {
+    background-color: #FF4500;
+}
+
+section:nth-of-type(4) .container{
+    text-align: center;
+}
+
+section:nth-of-type(4) .container-desenvolvedores{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+section:nth-of-type(4) .desenvolvedor{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar{
+    width: 8vw;
+    height: 8vw;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.mateus{
+    background-image: url('/docs/fotos/foto_avatar_mateus.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.giovanny{
+    background-image: url('/docs/fotos/foto_avatar_giovanny.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+section:nth-of-type(4) .descricao{
+    padding: 10px;
+}
+
+section:nth-of-type(4) .descricao p{
+    color: white;
+    text-align: justify;
+}
+
+section:nth-of-type(4) i{
+    font-size: 30px;
+    margin: 20px;
+}
+
+.fa-linkedin{
+    color: #0A66C2;
+}
+
+.fa-github{
+    color: #24292E;
+}
+
+.passo-a-passo{
+    margin: 20px 0;
+    text-align: justify;
+}
+
+.passo-a-passo p, section:nth-of-type(6) p{
+    color: white;
+    margin: 10px 0;
+}
+
+.passo-a-passo a, section:nth-of-type(6) a{
+    color: #FF4500;
+    text-decoration: none;
+    font-style: italic;
+}
+
+.img-passo-python{
+    width: 100%;
+    height: 75vh;
+    background-size: 100% 100%;
+}
+
+.passo1{
+    background-image: url('/docs/fotos/passo1-python.jpg');
+}
+.passo2{
+    background-image: url('/docs/fotos/passo2-python.jpg');
+}
+.passo3{
+    background-image: url('/docs/fotos/passo3-python.jpg');
+}
+.passo4{
+    background-image: url('/docs/fotos/passo4-python.jpg');
+}
+
+footer{
+    margin-top: 10vh;
+    width: 100%;
+    height: 9vh;
+    background-color: #FF4500;
+}
+
+footer p{
+    padding-top: calc(4.5vh - 8px);
+    text-align: center;
+}
