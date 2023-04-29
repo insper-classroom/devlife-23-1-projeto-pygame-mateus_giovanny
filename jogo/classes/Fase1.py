@@ -22,7 +22,8 @@ class Fase1:
             },
             'delta_t': 0,
             't0': 0,
-            'pontuacao' : pontuacao
+            'pontuacao' : pontuacao,
+            'tempo_sair': 0
             }
         self.jogador = Jogador(self.grupos)
         Blinky(self.grupos, FANTASMA_VERMELHO)
@@ -31,19 +32,6 @@ class Fase1:
         Clyde(self.grupos, FANTASMA_AMARELO)
         self.le_mapa()
         self.tempo_animacao_fugindo = 0
-    
-    # def gera_mapa(self):
-    #     with open('jogo/mapas/mapa2.txt','w') as mapa1:
-    #         for y in range(ALTURA_MAPA):
-    #             if y != 0:
-    #                 mapa1.write('\n')
-    #             for x in range(LARGURA_MAPA):
-    #                 if (x == 0 or y == 0) or (x == LARGURA_MAPA - 1 or y == ALTURA_MAPA - 1):
-    #                     mapa1.write('1')
-    #                 # elif LARGURA_MAPA // 2 - 5 <= x <= LARGURA_MAPA // 2 + 5 and ALTURA_MAPA // 2 - 5 <= y <= ALTURA_MAPA // 2 + 5:
-    #                 #     mapa1.write('1')
-    #                 else:
-    #                     mapa1.write('2')
 
     def le_mapa(self):
         with open('jogo/mapas/mapa1.txt','r') as mapa1:
@@ -86,6 +74,14 @@ class Fase1:
         t1 = pygame.time.get_ticks()
         self.estado['delta_t'] = (t1 - self.estado['t0']) / 1000
         self.estado['t0'] = t1
+
+        self.estado['tempo_sair'] += self.estado['delta_t']
+        if self.estado['tempo_sair'] >= 2:
+            self.estado['tempo_sair'] = 0
+            for fantasma in self.grupos['fantasmas']:
+                if fantasma.estado['preso']:
+                    fantasma.estado['preso'] = False
+                    break
 
         if len(self.grupos['come_fantasma']) < self.estado['come_fantasma']['quantidade']:
             self.estado['come_fantasma']['tempo'] += self.estado['delta_t']

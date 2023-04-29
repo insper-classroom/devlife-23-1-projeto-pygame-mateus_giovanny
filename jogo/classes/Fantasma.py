@@ -15,7 +15,7 @@ class Fantasma(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.velocidade = 5
-        self.estado = {'perdido': False, 'fugindo': False, 'morto': False, 'mortes': 0}
+        self.estado = {'perdido': False, 'fugindo': False, 'morto': False, 'mortes': 0, 'preso': True}
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
         self.direcao_oposta = ''
         self.pos_jogador = None
@@ -260,6 +260,7 @@ class Fantasma(pygame.sprite.Sprite):
     def define_prioridade_morto(self):
         if self.pos_inicial[0] - self.velocidade <= self.rect.x <= self.pos_inicial[0] + self.velocidade and self.pos_inicial[1] - self.velocidade <= self.rect.y <= self.pos_inicial[1] + self.velocidade:
             self.estado['morto'] = False
+            self.estado['preso'] = True
         if abs(self.rect.x - self.pos_inicial[0]) > abs(self.rect.y - self.pos_inicial[1]):
             if self.rect.x > self.pos_inicial[0]:
                 self.prioridade = 'esquerda'
@@ -289,14 +290,17 @@ class Fantasma(pygame.sprite.Sprite):
                 self.escolhe_direcao()
                 self.define_prioridade()
 
-        if self.direcao['direita']:
-            self.rect.x += self.velocidade
-        elif self.direcao['esquerda']:
-            self.rect.x -= self.velocidade
-        elif self.direcao['cima']:
-            self.rect.y -= self.velocidade
-        elif self.direcao['baixo']:
-            self.rect.y += self.velocidade
+        if self.estado['preso']:
+            pass
+        else:
+            if self.direcao['direita']:
+                self.rect.x += self.velocidade
+            elif self.direcao['esquerda']:
+                self.rect.x -= self.velocidade
+            elif self.direcao['cima']:
+                self.rect.y -= self.velocidade
+            elif self.direcao['baixo']:
+                self.rect.y += self.velocidade
 
         if self.rect.x < MARGEM_X+1:
             self.rect.x = (LARGURA_MAPA-1) * BLOCO + MARGEM_X
