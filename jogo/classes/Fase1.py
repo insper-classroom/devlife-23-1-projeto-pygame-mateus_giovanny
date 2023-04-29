@@ -3,7 +3,8 @@ from constantes import *
 from classes.Jogador import Jogador
 from classes.Blinky import Blinky
 from classes.Clyde import Clyde
-
+from classes.Inky import Inky
+from classes.Pinky import Pinky
 
 class Fase1:
     def __init__(self,pontuacao):
@@ -21,26 +22,16 @@ class Fase1:
             },
             'delta_t': 0,
             't0': 0,
-            'pontuacao' : pontuacao
+            'pontuacao' : pontuacao,
+            'tempo_sair': 0
             }
         self.jogador = Jogador(self.grupos)
-        self.fantasma_vermelho = Blinky(self.grupos, FANTASMA_VERMELHO)
-        self.fantasma_laranja = Clyde(self.grupos, FANTASMA_AMARELO)
+        Blinky(self.grupos, FANTASMA_VERMELHO)
+        Pinky(self.grupos, FANTASMA_ROSA)
+        Inky(self.grupos, FANTASMA_AZUL)
+        Clyde(self.grupos, FANTASMA_AMARELO)
         self.le_mapa()
         self.tempo_animacao_fugindo = 0
-    
-    # def gera_mapa(self):
-    #     with open('jogo/mapas/mapa2.txt','w') as mapa1:
-    #         for y in range(ALTURA_MAPA):
-    #             if y != 0:
-    #                 mapa1.write('\n')
-    #             for x in range(LARGURA_MAPA):
-    #                 if (x == 0 or y == 0) or (x == LARGURA_MAPA - 1 or y == ALTURA_MAPA - 1):
-    #                     mapa1.write('1')
-    #                 # elif LARGURA_MAPA // 2 - 5 <= x <= LARGURA_MAPA // 2 + 5 and ALTURA_MAPA // 2 - 5 <= y <= ALTURA_MAPA // 2 + 5:
-    #                 #     mapa1.write('1')
-    #                 else:
-    #                     mapa1.write('2')
 
     def le_mapa(self):
         with open('jogo/mapas/mapa1.txt','r') as mapa1:
@@ -84,6 +75,14 @@ class Fase1:
         self.estado['delta_t'] = (t1 - self.estado['t0']) / 1000
         self.estado['t0'] = t1
 
+        self.estado['tempo_sair'] += self.estado['delta_t']
+        if self.estado['tempo_sair'] >= 2:
+            self.estado['tempo_sair'] = 0
+            for fantasma in self.grupos['fantasmas']:
+                if fantasma.estado['preso']:
+                    fantasma.estado['preso'] = False
+                    break
+
         if len(self.grupos['come_fantasma']) < self.estado['come_fantasma']['quantidade']:
             self.estado['come_fantasma']['tempo'] += self.estado['delta_t']
             index = 0
@@ -114,6 +113,7 @@ class Fase1:
 
         for fantasma in self.grupos['fantasmas']:
             fantasma.pos_jogador = (self.jogador.rect.x,self.jogador.rect.y)
+            fantasma.prox_direcao_jogador = self.jogador.prox_direcao
 
         self.grupos['all_sprites'].update()
         self.jogador.verifica_direcao_livre()
@@ -134,9 +134,6 @@ class Fase1:
 
         if self.jogador.pontuacao != 0:
             self.estado['pontuacao'] += self.jogador.pontuacao
-
-        if self.fantasma_vermelho.estado['morto']:
-            self.fantasma_vermelho.estado['fugindo'] = False
 
         if self.jogador.comedor:
             for fantasma in colisao_fantasma:

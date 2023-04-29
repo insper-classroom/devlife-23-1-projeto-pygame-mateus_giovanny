@@ -1,12 +1,60 @@
 from classes.Fantasma import Fantasma
 from constantes import *
 
-class Blinky(Fantasma):
+class Pinky(Fantasma):
     def __init__(self, grupos, img):
         x = (LARGURA_MAPA//2) * BLOCO + MARGEM_X +2
         y = (ALTURA_MAPA//2 -5) * BLOCO + MARGEM_Y +2
         super().__init__(grupos, img, x, y)
-        self.estado['preso'] = False
+
+    def define_prioridade(self):
+        if self.prox_direcao_jogador == 'direita':
+            if abs(self.rect.x - self.pos_jogador[0] + VELOCIDADE) > abs(self.rect.y - self.pos_jogador[1]):
+                if self.rect.x > self.pos_jogador[0] + VELOCIDADE:
+                    self.prioridade = 'esquerda'
+                else:
+                    self.prioridade = 'direita'
+            else:
+                if self.rect.y > self.pos_jogador[1]:
+                    self.prioridade = 'cima'
+                else:
+                    self.prioridade = 'baixo'
+        
+        elif self.prox_direcao_jogador == 'esquerda':
+            if abs(self.rect.x - self.pos_jogador[0] - VELOCIDADE) > abs(self.rect.y - self.pos_jogador[1]):
+                if self.rect.x > self.pos_jogador[0] - VELOCIDADE:
+                    self.prioridade = 'esquerda'
+                else:
+                    self.prioridade = 'direita'
+            else:
+                if self.rect.y > self.pos_jogador[1]:
+                    self.prioridade = 'cima'
+                else:
+                    self.prioridade = 'baixo'
+
+        elif self.prox_direcao_jogador == 'cima':
+            if abs(self.rect.x - self.pos_jogador[0]) > abs(self.rect.y - self.pos_jogador[1] - VELOCIDADE):
+                if self.rect.x > self.pos_jogador[0]:
+                    self.prioridade = 'esquerda'
+                else:
+                    self.prioridade = 'direita'
+            else:
+                if self.rect.y > self.pos_jogador[1] - VELOCIDADE:
+                    self.prioridade = 'cima'
+                else:
+                    self.prioridade = 'baixo'
+        
+        elif self.prox_direcao_jogador == 'baixo':
+            if abs(self.rect.x - self.pos_jogador[0]) > abs(self.rect.y - self.pos_jogador[1] + VELOCIDADE):
+                if self.rect.x > self.pos_jogador[0]:
+                    self.prioridade = 'esquerda'
+                else:
+                    self.prioridade = 'direita'
+            else:
+                if self.rect.y > self.pos_jogador[1] + VELOCIDADE:
+                    self.prioridade = 'cima'
+                else:
+                    self.prioridade = 'baixo'
 
     def escolhe_direcao(self):
         if self.prioridade == 'direita':
@@ -80,15 +128,3 @@ class Blinky(Fantasma):
                 else:
                     self.estado['perdido'] = True
                     self.reseta_direcao()
-
-    def define_prioridade(self):
-        if abs(self.rect.x - self.pos_jogador[0]) > abs(self.rect.y - self.pos_jogador[1]):
-            if self.rect.x > self.pos_jogador[0]:
-                self.prioridade = 'esquerda'
-            else:
-                self.prioridade = 'direita'
-        else:
-            if self.rect.y > self.pos_jogador[1]:
-                self.prioridade = 'cima'
-            else:
-                self.prioridade = 'baixo'
