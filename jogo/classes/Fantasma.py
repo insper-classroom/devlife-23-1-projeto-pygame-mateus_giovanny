@@ -19,6 +19,7 @@ class Fantasma(pygame.sprite.Sprite):
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
         self.direcao_oposta = ''
         self.pos_jogador = None
+        self.prox_direcao_jogador = None
         self.prioridade = ''
                 
     

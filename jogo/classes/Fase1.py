@@ -4,6 +4,7 @@ from classes.Jogador import Jogador
 from classes.Blinky import Blinky
 from classes.Clyde import Clyde
 from classes.Inky import Inky
+from classes.Pinky import Pinky
 
 class Fase1:
     def __init__(self,pontuacao):
@@ -25,6 +26,7 @@ class Fase1:
             }
         self.jogador = Jogador(self.grupos)
         Blinky(self.grupos, FANTASMA_VERMELHO)
+        Pinky(self.grupos, FANTASMA_ROSA)
         Inky(self.grupos, FANTASMA_AZUL)
         Clyde(self.grupos, FANTASMA_AMARELO)
         self.le_mapa()
@@ -115,6 +117,7 @@ class Fase1:
 
         for fantasma in self.grupos['fantasmas']:
             fantasma.pos_jogador = (self.jogador.rect.x,self.jogador.rect.y)
+            fantasma.prox_direcao_jogador = self.jogador.prox_direcao
 
         self.grupos['all_sprites'].update()
         self.jogador.verifica_direcao_livre()
