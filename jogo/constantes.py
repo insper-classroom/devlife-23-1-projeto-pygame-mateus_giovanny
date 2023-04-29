@@ -36,4 +36,5 @@ VELOCIDADE = 5
 #fantasmas
 TAMANHO_FANTASMA = (BLOCO-4,BLOCO-4)
 FANTASMA_AMARELO = pygame.transform.scale(pygame.image.load('jogo/assets\img/fantasma_amarelo.png'), TAMANHO_FANTASMA)
+FANTASMA_VERMELHO = pygame.transform.scale(pygame.image.load('jogo/assets\img/fatasma_vermelho_direita.png'), TAMANHO_FANTASMA)
 FANTASMA_FUGINDO = [pygame.transform.scale(pygame.image.load('jogo/assets\img/fantasma azul.png'), TAMANHO_FANTASMA), pygame.transform.scale(pygame.image.load('jogo/assets\img/fantasma branco.png'), TAMANHO_FANTASMA)]
