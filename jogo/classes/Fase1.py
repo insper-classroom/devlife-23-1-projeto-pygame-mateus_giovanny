@@ -3,7 +3,7 @@ from constantes import *
 from classes.Jogador import Jogador
 from classes.Blinky import Blinky
 from classes.Clyde import Clyde
-
+from classes.Inky import Inky
 
 class Fase1:
     def __init__(self,pontuacao):
@@ -24,8 +24,9 @@ class Fase1:
             'pontuacao' : pontuacao
             }
         self.jogador = Jogador(self.grupos)
-        self.fantasma_vermelho = Blinky(self.grupos, FANTASMA_VERMELHO)
-        self.fantasma_laranja = Clyde(self.grupos, FANTASMA_AMARELO)
+        Blinky(self.grupos, FANTASMA_VERMELHO)
+        Inky(self.grupos, FANTASMA_AZUL)
+        Clyde(self.grupos, FANTASMA_AMARELO)
         self.le_mapa()
         self.tempo_animacao_fugindo = 0
     
@@ -134,9 +135,6 @@ class Fase1:
 
         if self.jogador.pontuacao != 0:
             self.estado['pontuacao'] += self.jogador.pontuacao
-
-        if self.fantasma_vermelho.estado['morto']:
-            self.fantasma_vermelho.estado['fugindo'] = False
 
         if self.jogador.comedor:
             for fantasma in colisao_fantasma:

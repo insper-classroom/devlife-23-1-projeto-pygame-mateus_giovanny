@@ -312,5 +312,9 @@ class Fantasma(pygame.sprite.Sprite):
             elif self.direcao['baixo']:
                 self.rect.y -= self.velocidade
 
+        if self.estado['morto']:
+            self.estado['fugindo'] =  False
+            self.image = FANTASMA_MORTO
+
         if not self.estado['fugindo'] and not self.estado['morto']:
             self.image = self.img
