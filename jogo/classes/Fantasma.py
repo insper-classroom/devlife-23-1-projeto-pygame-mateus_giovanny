@@ -5,6 +5,7 @@ class Fantasma(pygame.sprite.Sprite):
     def __init__(self, grupos, img, x, y):
         super().__init__()
 
+        self.img = img
         self.grupos = grupos
         self.grupos['all_sprites'].add(self)
         self.grupos['fantasmas'].add(self)
@@ -13,9 +14,8 @@ class Fantasma(pygame.sprite.Sprite):
         self.pos_inicial = [x,y]
         self.rect.x = x
         self.rect.y = y
-        self.velocidade = VELOCIDADE
-        self.estado = {'perdido': False, 'fugindo': False, 'morto': False}
-
+        self.velocidade = 5
+        self.estado = {'perdido': False, 'fugindo': False, 'morto': False, 'mortes': 0}
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
         self.direcao_oposta = ''
         self.pos_jogador = None
@@ -311,3 +311,6 @@ class Fantasma(pygame.sprite.Sprite):
                 self.rect.y += self.velocidade
             elif self.direcao['baixo']:
                 self.rect.y -= self.velocidade
+
+        if not self.estado['fugindo'] and not self.estado['morto']:
+            self.image = self.img

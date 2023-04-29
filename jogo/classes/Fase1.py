@@ -2,7 +2,7 @@ import pygame
 from constantes import *
 from classes.Jogador import Jogador
 from classes.Blinky import Blinky
-
+from classes.Clyde import Clyde
 
 
 class Fase1:
@@ -24,7 +24,8 @@ class Fase1:
             'pontuacao' : pontuacao
             }
         self.jogador = Jogador(self.grupos)
-        self.fatasma_vermelho = Blinky(self.grupos, FANTASMA_VERMELHO)
+        self.fantasma_vermelho = Blinky(self.grupos, FANTASMA_VERMELHO)
+        self.fantasma_laranja = Clyde(self.grupos, FANTASMA_AMARELO)
         self.le_mapa()
         self.tempo_animacao_fugindo = 0
     
@@ -87,25 +88,33 @@ class Fase1:
             self.estado['come_fantasma']['tempo'] += self.estado['delta_t']
             index = 0
             self.jogador.comedor = True
-            if not self.fatasma_vermelho.estado['morto']:
-                self.fatasma_vermelho.estado['fugindo'] = True
+
+            for fantasma in self.grupos['fantasmas']:
+                if not fantasma.estado['morto'] and fantasma.estado['mortes'] == 0:
+                    fantasma.estado['fugindo'] = True
 
             if self.estado['come_fantasma']['tempo'] >= 8:
                 self.tempo_animacao_fugindo += self.estado['delta_t']
                 if self.tempo_animacao_fugindo > 0.3:
                     self.tempo_animacao_fugindo = 0
                     index += 1
-            self.fatasma_vermelho.image = FANTASMA_FUGINDO[index]
+                    
+            for fantasma in self.grupos['fantasmas']:
+                if fantasma.estado['fugindo']:
+                    fantasma.image = FANTASMA_FUGINDO[index]
+
             if self.estado['come_fantasma']['tempo'] >= 10:
-                self.jogador.comedor = True
                 self.estado['come_fantasma']['tempo'] = 0
-                self.fatasma_vermelho.estado['fugindo'] = False
+
+                for fantasma in self.grupos['fantasmas']:
+                    fantasma.estado['fugindo'] = False
+                    fantasma.estado['mortes'] = 0
                 self.jogador.comedor = False
                 self.estado['come_fantasma']['quantidade'] -= 1
-                self.fatasma_vermelho.image = FANTASMA_AMARELO
 
+        for fantasma in self.grupos['fantasmas']:
+            fantasma.pos_jogador = (self.jogador.rect.x,self.jogador.rect.y)
 
-        self.fatasma_vermelho.pos_jogador = (self.jogador.rect.x,self.jogador.rect.y)
         self.grupos['all_sprites'].update()
         self.jogador.verifica_direcao_livre()
         for evento in pygame.event.get():
@@ -126,16 +135,19 @@ class Fase1:
         if self.jogador.pontuacao != 0:
             self.estado['pontuacao'] += self.jogador.pontuacao
 
-        if self.fatasma_vermelho.estado['morto']:
-            self.fatasma_vermelho.estado['fugindo'] = False
+        if self.fantasma_vermelho.estado['morto']:
+            self.fantasma_vermelho.estado['fugindo'] = False
 
         if self.jogador.comedor:
-            for colisao in colisao_fantasma:
-                self.fatasma_vermelho.estado['morto'] = True
+            for fantasma in colisao_fantasma:
+                if fantasma.estado['fugindo']:
+                    fantasma.estado['morto'] = True
+                    fantasma.estado['mortes'] += 1
         else:
-            for colisao in colisao_fantasma:
-                from classes.Tela_game_over import Tela_game_over
-                return Tela_game_over(self.estado['pontuacao'])
+            for fantasma in colisao_fantasma:
+                if not fantasma.estado['morto']:
+                    from classes.Tela_game_over import Tela_game_over
+                    return Tela_game_over(self.estado['pontuacao'])
         
         if len(self.grupos['bolinhas']) == 0:
             return Fase1(self.estado['pontuacao'])
