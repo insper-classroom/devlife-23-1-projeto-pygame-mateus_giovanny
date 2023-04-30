@@ -15,7 +15,8 @@ class Jogador(pygame.sprite.Sprite):
         self.comedor = False
         self.velocidade = VELOCIDADE
         self.index = 1
-        self.vidas = 3
+        COMENDO.set_volume(0.5)
+        COMENDO_POWER.set_volume(0.5)
 
     def update(self):
         if self.index == 4:
@@ -52,11 +53,14 @@ class Jogador(pygame.sprite.Sprite):
 
         index = self.rect.collidelist(self.grupos['bolinhas'])
         if index != -1:
+            # COMENDO.play(0, 105)
+            COMENDO_POWER.play(0,105)
             del self.grupos['bolinhas'][index]
             self.pontuacao += 10
 
         index = self.rect.collidelist(self.grupos['come_fantasma'])
         if index != -1:
+            COMENDO_POWER.play(0,105)
             del self.grupos['come_fantasma'][index]
 
             

@@ -1,4 +1,5 @@
 import pygame
+pygame.mixer.init()
 TAMANHO_JANELA = (1024,760)
 #mapa
 LARGURA_MAPA = 29
@@ -16,8 +17,12 @@ IMG_TELA_INSTRUCOES = pygame.transform.scale(pygame.image.load('jogo/assets\img/
 IMG_TELA_PLACARES = pygame.transform.scale(pygame.image.load('jogo/assets/img/tela_pontuação.png'),TAMANHO_IMG_TELA_INICIAL)
 IMG_TELA_GAME_OVER_1 = pygame.transform.scale(pygame.image.load('jogo/assets\img\TELA_GAME_OVER._1.png'),(700, 760))
 IMG_TELA_GAME_OVER_PONTUACAO = pygame.transform.scale(pygame.image.load('jogo/assets\img\TELA_GAME_OVER_PONTUACAO.png'),(700, 760))
+FONTE = 'jogo/fontes\BraahOne-Regular.ttf'
 
-FONTE = 'jogo/fontes\BraahOne-Regular.ttf' 
+#som
+COMENDO = pygame.mixer.Sound('jogo/assets\som\pac_comendo.ogg')
+COMENDO_POWER = pygame.mixer.Sound('jogo/assets\som\power_pellet_obtain.wav')
+COMENDO_FANTASMA = pygame.mixer.Sound('jogo/assets\som\ghost_eaten.wav')
 
 #cores
 PRETO = (0,0,0)

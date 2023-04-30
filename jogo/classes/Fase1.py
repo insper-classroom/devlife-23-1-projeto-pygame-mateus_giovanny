@@ -8,6 +8,10 @@ from classes.Pinky import Pinky
 
 class Fase1:
     def __init__(self,pontuacao, vidas):
+        pygame.mixer.music.load('jogo/assets\som\ghostmove.ogg')
+        pygame.mixer.music.set_volume(0.4)
+        pygame.mixer.music.play(-1)
+        COMENDO_FANTASMA.set_volume(0.6)
         self.grupos = {
             'all_sprites': pygame.sprite.Group(),
             'paredes': [],
@@ -25,7 +29,8 @@ class Fase1:
             'pontuacao' : pontuacao,
             'tempo_sair': 0,
             'animacao_pac': 0,
-            'jogador_vidas': vidas
+            'jogador_vidas': vidas,
+            'tocando': 'ghostmove'
             }
         self.jogador = Jogador(self.grupos)
         Blinky(self.grupos, FANTASMA_VERMELHO)
@@ -93,6 +98,13 @@ class Fase1:
             self.jogador.index +=1
 
         if len(self.grupos['come_fantasma']) < self.estado['come_fantasma']['quantidade']:
+
+            if self.estado['tocando'] == 'ghostmove':
+                self.estado['tocando'] = 'power_pellet'
+                pygame.mixer.music.load('jogo/assets\som\power_pellet.wav')
+                pygame.mixer.music.set_volume(0.4)
+                pygame.mixer.music.play(-1)
+
             self.estado['come_fantasma']['tempo'] += self.estado['delta_t']
             index = 0
             self.jogador.comedor = True
@@ -112,6 +124,11 @@ class Fase1:
                     fantasma.image = FANTASMA_FUGINDO[index]
 
             if self.estado['come_fantasma']['tempo'] >= 10:
+                self.estado['tocando'] = 'ghostmove'
+                pygame.mixer.music.load('jogo/assets\som\ghostmove.ogg')
+                pygame.mixer.music.set_volume(0.4)
+                pygame.mixer.music.play(-1)
+
                 self.estado['come_fantasma']['tempo'] = 0
 
                 for fantasma in self.grupos['fantasmas']:
@@ -147,6 +164,7 @@ class Fase1:
         if self.jogador.comedor:
             for fantasma in colisao_fantasma:
                 if fantasma.estado['fugindo']:
+                    COMENDO_FANTASMA.play()
                     fantasma.estado['morto'] = True
                     fantasma.estado['mortes'] += 1
         else:
@@ -158,11 +176,12 @@ class Fase1:
                         fantasma.estado['preso'] = True
                     self.jogador.rect.x = (LARGURA_MAPA//2) * BLOCO + MARGEM_X +2
                     self.jogador.rect.y = (ALTURA_MAPA//2) * BLOCO + MARGEM_Y +2
-                    self.estado['jogador_vidas'] -=1
-                    self.jogador.vidas -= 1
-                    print(self.estado['jogador_vidas'])
+                    self.estado['jogador_vidas'] -= 1
         
         if self.estado['jogador_vidas'] <= 0:
+            pygame.mixer.music.load('jogo/assets\som\musica_fundo.mp3')
+            pygame.mixer.music.set_volume(0.4)
+            pygame.mixer.music.play(-1)
             from classes.Tela_game_over import Tela_game_over
             return Tela_game_over(self.estado['pontuacao'])
         
