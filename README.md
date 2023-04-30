@@ -1,13 +1,9 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/F62_0SL3)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=10907766&assignment_repo_type=AssignmentRepo)
-# [COLOQUE O TÍTULO DO SEU JOGO AQUI]
+#InsPac-Man
 
-Vocês já tiveram 2 exemplos de arquivo README nos projetos anteriores (projeto individual e checks pygame). Desta vez não forneceremos um template, mas você pode usar os projetos anteriores como base.
-
-Lembre-se de colocar algumas imagens do jogo no seu README.
-
-**IMPORTANTE:** coloque o nome de todos os membros do grupo neste documento e na página do jogo.
-
-Além disso, a página do jogo deve ser feita dentro da pasta `docs`.
-
-APAGUE ESSE CONTEÚDO E SUBSTITUA PELO SEU PRÓPRIO README!
+##Overview
+A ideia desse projeto é criar uma replica do famoso jogo Pac-Man. Esse jogo foi desenvolvido pelos alunos [**Mateus Moreira**](https://www.linkedin.com/in/mateus-moreira-8a8bb1214/) e [**Giovanny Russo**](https://www.linkedin.com/in/giovanny-russo-8a8b261b2/), ambos de ciência da computação do insper. Para mais detalhes entre no [site do projeto](https://insper-classroom.github.io/devlife-23-1-projeto-pygame-mateus_giovanny/)
+---
+##Instalação
+Primeiro é preciso ter o python instalado no seu computador, se ainda não tem entre no site do projeto na aba de como baixar e siga o tutorial lá, [clique aqui](https://insper-classroom.github.io/devlife-23-1-projeto-pygame-mateus_giovanny/)
+![print do menu do site](fotos\Captura de tela 2023-04-30 173036.png)
+Tendo o python instalado, vamos instalar o jogo. Primeiro baixe o aquivo compactado do repositório clicando [aqui](https://github.com/insper-classroom/devlife-23-1-projeto-pygame-mateus_giovanny/jogo.rar)
