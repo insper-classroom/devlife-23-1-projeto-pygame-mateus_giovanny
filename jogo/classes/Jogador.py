@@ -24,16 +24,16 @@ class Jogador(pygame.sprite.Sprite):
             
         self.pontuacao = 0
         if self.direcao['direita']:
-            self.image = pygame.transform.scale(pygame.image.load(f'jogo/assets\img\PACs/direita{self.index}.png'), TAMANHO_JOGADOR)
+            self.image = pygame.transform.scale(pygame.image.load(f'assets\img\PACs/direita{self.index}.png'), TAMANHO_JOGADOR)
             self.rect.x += self.velocidade
         elif self.direcao['esquerda']:
-            self.image = pygame.transform.scale(pygame.image.load(f'jogo/assets\img\PACs/esquerda{self.index}.png'), TAMANHO_JOGADOR)
+            self.image = pygame.transform.scale(pygame.image.load(f'assets\img\PACs/esquerda{self.index}.png'), TAMANHO_JOGADOR)
             self.rect.x -= self.velocidade
         elif self.direcao['cima']:
-            self.image = pygame.transform.scale(pygame.image.load(f'jogo/assets\img\PACs/cima{self.index}.png'), TAMANHO_JOGADOR)
+            self.image = pygame.transform.scale(pygame.image.load(f'assets\img\PACs/cima{self.index}.png'), TAMANHO_JOGADOR)
             self.rect.y -= self.velocidade
         elif self.direcao['baixo']:
-            self.image = pygame.transform.scale(pygame.image.load(f'jogo/assets\img\PACs/baixo{self.index}.png'), TAMANHO_JOGADOR)
+            self.image = pygame.transform.scale(pygame.image.load(f'assets\img\PACs/baixo{self.index}.png'), TAMANHO_JOGADOR)
             self.rect.y += self.velocidade
 
         if self.rect.x < MARGEM_X+1:

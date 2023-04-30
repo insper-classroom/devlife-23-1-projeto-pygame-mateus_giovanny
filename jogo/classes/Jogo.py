@@ -5,7 +5,7 @@ from classes.Tela_inicial import Tela_inicial
 class Jogo:
     def __init__(self):
         pygame.init()
-        pygame.mixer.music.load('jogo/assets\som\musica_fundo.mp3')
+        pygame.mixer.music.load('assets\som\musica_fundo.mp3')
         pygame.mixer.music.set_volume(0.4)
         pygame.mixer.music.play(-1)
         self.tela_atual = Tela_inicial()
