@@ -66,7 +66,7 @@ section{
     top: 10vh;
     width: 100%;
     height: 100%;
-    background-image: url('../fotos/corre_pac.gif');
+    background-image: url('../fotos/gif_gameplay.gif');
     background-size: cover;
     background-position: center;
 }
@@ -81,7 +81,7 @@ section{
 .gif-jogo{
     width: 100%;
     height: 75vh;
-    background-image: url('../fotos/corre_pac.gif');
+    background-image: url('../fotos/gif_gameplay.gif');
     background-position: center;
     background-size: cover;
     position: relative;
