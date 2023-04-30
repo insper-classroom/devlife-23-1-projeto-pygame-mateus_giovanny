@@ -39,3 +39,5 @@ python3 play.py
 ```
 
 Agora que você já sabe como executar o jogo, é só se divertir.
+
+![pac man dando joinha](docs/fotos/pac_dando_joinha.gif)
