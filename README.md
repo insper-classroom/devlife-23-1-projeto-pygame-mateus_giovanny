@@ -3,6 +3,8 @@
 ## Overview
 A ideia desse projeto é criar uma replica do famoso jogo Pac-Man usando pygame. Esse jogo foi desenvolvido pelos alunos [**Mateus Moreira**](https://www.linkedin.com/in/mateus-moreira-8a8bb1214/) e [**Giovanny Russo**](https://www.linkedin.com/in/giovanny-russo-8a8b261b2/), ambos de ciência da computação do insper. Para mais detalhes entre no [site do projeto](https://insper-classroom.github.io/devlife-23-1-projeto-pygame-mateus_giovanny/)
 
+![print1 do jogo](docs/fotos/img_readme4.png) ![print2 do jogo](docs/fotos/img_readme5.png)
+
 ---
 ## Instalação
 
@@ -36,4 +38,4 @@ ou
 python3 play.py
 ```
 
-Agora você já sabe como executar o jogo, agora é só se divertir.
+Agora que você já sabe como executar o jogo, é só se divertir.
