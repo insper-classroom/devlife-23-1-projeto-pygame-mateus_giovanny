@@ -14,20 +14,24 @@ class Jogador(pygame.sprite.Sprite):
         self.prox_direcao = ''
         self.comedor = False
         self.velocidade = VELOCIDADE
+        self.index = 1
 
     def update(self):
+        if self.index == 4:
+            self.index = 1
+            
         self.pontuacao = 0
         if self.direcao['direita']:
-            self.image = PAC_MAN[0]
+            self.image = pygame.transform.scale(pygame.image.load(f'jogo/assets\img\PACs/direita{self.index}.png'), TAMANHO_JOGADOR)
             self.rect.x += self.velocidade
         elif self.direcao['esquerda']:
-            self.image = PAC_MAN[1]
+            self.image = pygame.transform.scale(pygame.image.load(f'jogo/assets\img\PACs/esquerda{self.index}.png'), TAMANHO_JOGADOR)
             self.rect.x -= self.velocidade
         elif self.direcao['cima']:
-            self.image = PAC_MAN[2]
+            self.image = pygame.transform.scale(pygame.image.load(f'jogo/assets\img\PACs/cima{self.index}.png'), TAMANHO_JOGADOR)
             self.rect.y -= self.velocidade
         elif self.direcao['baixo']:
-            self.image = PAC_MAN[3]
+            self.image = pygame.transform.scale(pygame.image.load(f'jogo/assets\img\PACs/baixo{self.index}.png'), TAMANHO_JOGADOR)
             self.rect.y += self.velocidade
 
         if self.rect.x < MARGEM_X+1:

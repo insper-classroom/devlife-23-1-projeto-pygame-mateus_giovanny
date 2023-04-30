@@ -23,7 +23,8 @@ class Fase1:
             'delta_t': 0,
             't0': 0,
             'pontuacao' : pontuacao,
-            'tempo_sair': 0
+            'tempo_sair': 0,
+            'animacao_pac': 0
             }
         self.jogador = Jogador(self.grupos)
         Blinky(self.grupos, FANTASMA_VERMELHO)
@@ -82,6 +83,11 @@ class Fase1:
                 if fantasma.estado['preso']:
                     fantasma.estado['preso'] = False
                     break
+
+        self.estado['animacao_pac'] += self.estado['delta_t']
+        if self.estado['animacao_pac'] >= 0.05:
+            self.estado['animacao_pac'] = 0
+            self.jogador.index +=1
 
         if len(self.grupos['come_fantasma']) < self.estado['come_fantasma']['quantidade']:
             self.estado['come_fantasma']['tempo'] += self.estado['delta_t']
