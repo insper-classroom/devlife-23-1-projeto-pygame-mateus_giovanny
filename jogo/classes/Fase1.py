@@ -7,7 +7,7 @@ from classes.Inky import Inky
 from classes.Pinky import Pinky
 
 class Fase1:
-    def __init__(self,pontuacao):
+    def __init__(self,pontuacao, vidas):
         self.grupos = {
             'all_sprites': pygame.sprite.Group(),
             'paredes': [],
@@ -24,7 +24,8 @@ class Fase1:
             't0': 0,
             'pontuacao' : pontuacao,
             'tempo_sair': 0,
-            'animacao_pac': 0
+            'animacao_pac': 0,
+            'jogador_vidas': vidas
             }
         self.jogador = Jogador(self.grupos)
         Blinky(self.grupos, FANTASMA_VERMELHO)
@@ -59,6 +60,8 @@ class Fase1:
 
     def desenha(self):
         JANELA.blit(self.text2image(f"Pontuação: {str(self.estado['pontuacao'])}"), (0,0))
+        for i in range(self.estado['jogador_vidas']):
+            JANELA.blit(PAC_MAN[0], (i * PAC_MAN[0].get_width(),20))
         for parede in self.grupos['paredes']:
             if parede.height == BLOCO//2:
                 pygame.draw.rect(JANELA, BRANCO, parede)
@@ -149,10 +152,21 @@ class Fase1:
         else:
             for fantasma in colisao_fantasma:
                 if not fantasma.estado['morto']:
-                    from classes.Tela_game_over import Tela_game_over
-                    return Tela_game_over(self.estado['pontuacao'])
+                    for fantasma in self.grupos['fantasmas']:
+                        fantasma.rect.x = fantasma.pos_inicial[0]
+                        fantasma.rect.y = fantasma.pos_inicial[1]
+                        fantasma.estado['preso'] = True
+                    self.jogador.rect.x = (LARGURA_MAPA//2) * BLOCO + MARGEM_X +2
+                    self.jogador.rect.y = (ALTURA_MAPA//2) * BLOCO + MARGEM_Y +2
+                    self.estado['jogador_vidas'] -=1
+                    self.jogador.vidas -= 1
+                    print(self.estado['jogador_vidas'])
+        
+        if self.estado['jogador_vidas'] <= 0:
+            from classes.Tela_game_over import Tela_game_over
+            return Tela_game_over(self.estado['pontuacao'])
         
         if len(self.grupos['bolinhas']) == 0:
-            return Fase1(self.estado['pontuacao'])
+            return Fase1(self.estado['pontuacao'], self.estado['jogador_vidas'])
 
         return self

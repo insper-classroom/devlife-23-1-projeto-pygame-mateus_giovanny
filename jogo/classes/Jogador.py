@@ -15,6 +15,7 @@ class Jogador(pygame.sprite.Sprite):
         self.comedor = False
         self.velocidade = VELOCIDADE
         self.index = 1
+        self.vidas = 3
 
     def update(self):
         if self.index == 4:

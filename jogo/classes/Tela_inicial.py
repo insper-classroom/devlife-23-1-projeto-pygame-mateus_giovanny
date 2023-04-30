@@ -18,7 +18,7 @@ class Tela_inicial:
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 if 668>= evento.pos[0] >= 358 and 493 >= evento.pos[1] >=415:
                     from classes.Fase1 import Fase1
-                    return Fase1(0)
+                    return Fase1(0,3)
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 if 609>= evento.pos[0] >= 417 and 543 >= evento.pos[1] >=501:
                     from classes.Tela_instrucoes import Tela_instrucoes

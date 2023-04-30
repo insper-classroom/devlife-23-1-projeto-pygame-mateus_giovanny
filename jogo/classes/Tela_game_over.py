@@ -12,7 +12,7 @@ class Tela_game_over:
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 if 609>= evento.pos[0] >= 416 and 735 >= evento.pos[1] >=668:
                     from classes.Fase1 import Fase1
-                    return Fase1(0)
+                    return Fase1(0,3)
         return self
 
     def text2image(self, text):
