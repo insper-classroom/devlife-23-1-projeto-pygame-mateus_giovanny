@@ -13,7 +13,7 @@ Primeiro é preciso ter o python instalado no seu computador, se ainda não tem 
 Tendo o python instalado, vamos instalar o jogo. Primeiro baixe o aquivo compactado do jogo clicando [aqui](https://github.com/insper-classroom/devlife-23-1-projeto-pygame-mateus_giovanny/raw/main/jogo.rar)
 Depois use um desconpactador de arquivos para extrair os arquivos.
 
-![print do descompactador de arquivos](docs/foto/img_readme2.png)
+![print do descompactador de arquivos](docs/fotos/img_readme2.png)
 
 Com isso feito, abra o seu terminal e digite:
 
