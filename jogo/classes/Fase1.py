@@ -1,4 +1,5 @@
 import pygame
+import os
 from constantes import *
 from classes.Jogador import Jogador
 from classes.Blinky import Blinky
@@ -64,6 +65,20 @@ class Fase1:
         fonte = pygame.font.Font(FONTE, 20)
         return fonte.render(text, True, BRANCO)
 
+    def verifica_pontuacao(self):
+        if os.path.getsize("pontuacao.txt") == 0:
+            return True
+        with open('pontuacao.txt','w') as arquivo:
+            linhas = arquivo.readlines()
+            if linhas < 6:
+                return True
+            for linha in range(linhas):
+                conteudo_linha = arquivo.readline()
+                nome_potuacao = conteudo_linha.split(':')
+                if self.estado['pontuacao'] > int(nome_potuacao[1]):
+                    return True
+        return False
+                
     def desenha(self):
         JANELA.blit(self.text2image(f"Pontuação: {str(self.estado['pontuacao'])}"), (0,0))
         for i in range(self.estado['jogador_vidas']):
@@ -189,8 +204,12 @@ class Fase1:
             pygame.mixer.music.load('assets\som\musica_fundo.mp3')
             pygame.mixer.music.set_volume(0.4)
             pygame.mixer.music.play(-1)
-            from classes.Tela_game_over import Tela_game_over
-            return Tela_game_over(self.estado['pontuacao'])
+            if self.verifica_pontuacao():
+                from classes.Tela_game_over_grava_pontuacao import Tela_game_over_pontuacao
+                return Tela_game_over_pontuacao(self.estado['pontuacao'])
+            else:
+                from classes.Tela_game_over import Tela_game_over
+                return Tela_game_over(self.estado['pontuacao'])
         
         if len(self.grupos['bolinhas']) == 0:
             return Fase1(self.estado['pontuacao'], self.estado['jogador_vidas'])
