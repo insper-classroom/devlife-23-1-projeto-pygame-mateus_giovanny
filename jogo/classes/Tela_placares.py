@@ -42,11 +42,13 @@ class Tela_placares:
     
     def ordena_placar(self):
         placar_tuplas = []
+        contador = 0
         with open('pontuacao.txt', 'r') as arquivo:
             arquivo.seek(0)
             for linha in arquivo:
+                contador += 1
                 conteudo_linha = linha.strip()
-                if conteudo_linha == '':
+                if conteudo_linha == '' or contador > 5:
                     break
                 nome_pontuacao = conteudo_linha.split(':')
                 placar_tuplas.append((nome_pontuacao[1], nome_pontuacao[0].upper()))
