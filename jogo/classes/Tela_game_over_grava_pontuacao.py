@@ -17,7 +17,7 @@ class Tela_game_over_pontuacao:
                     return Fase1(0)
             if evento.type == pygame.KEYDOWN:
                 if len(self.nome) <  3 and pygame.key.name(evento.key) in self.alfabeto:
-                    self.nome += pygame.key.name(evento.key)
+                    self.nome += pygame.key.name(evento.key).upper()
                 if evento.key == pygame.K_BACKSPACE and len(self.nome) > 0:
                     self.nome = self.nome.replace(self.nome[-1],'',1)
 
