@@ -48,10 +48,10 @@ class Tela_placares:
             for linha in arquivo:
                 contador += 1
                 conteudo_linha = linha.strip()
-                if conteudo_linha == '' or contador > 5:
+                if conteudo_linha == '':
                     break
                 nome_pontuacao = conteudo_linha.split(':')
-                placar_tuplas.append((nome_pontuacao[1], nome_pontuacao[0].upper()))
+                placar_tuplas.append((int(nome_pontuacao[1]), nome_pontuacao[0].upper()))
         return sorted(placar_tuplas, reverse=True)
     
     def atualiza(self):
@@ -65,11 +65,14 @@ class Tela_placares:
         return self
 
     def desenha(self):
+        contador = 0
         JANELA.blit(self.imagem,(TAMANHO_JANELA[0]//2 - TAMANHO_IMG_TELA_INICIAL[0]//2 ,TAMANHO_JANELA[1]//2 - TAMANHO_IMG_TELA_INICIAL[1]//2))
         lista_placar = self.ordena_placar()
         for tupla in lista_placar:
-            img = self.text2image(f'{tupla[1]} : {tupla[0]}')
-            JANELA.blit(img, (405,200 + img.get_height() * lista_placar.index(tupla)))
+            if contador < 5:
+                img = self.text2image(f'{tupla[1]} : {tupla[0]}')
+                JANELA.blit(img, (405,200 + img.get_height() * lista_placar.index(tupla)))
+            contador += 1
 
 
 

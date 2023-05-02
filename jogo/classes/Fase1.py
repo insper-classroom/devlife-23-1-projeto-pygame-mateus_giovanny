@@ -66,13 +66,14 @@ class Fase1:
         return fonte.render(text, True, BRANCO)
 
     def verifica_pontuacao(self):
+        contador = 0
         with open('pontuacao.txt','r') as arquivo:
-            linhas = len(arquivo.readlines())
-            print(linhas)
-            if linhas < 6:
-                return True
-            for linha in range(linhas):
-                conteudo_linha = arquivo.readline()
+            arquivo.seek(0)
+            for linha in arquivo:
+                contador += 1
+                conteudo_linha = linha.strip()
+                if conteudo_linha == '':
+                    break
                 nome_potuacao = conteudo_linha.split(':')
                 if self.estado['pontuacao'] > int(nome_potuacao[1]):
                     return True
