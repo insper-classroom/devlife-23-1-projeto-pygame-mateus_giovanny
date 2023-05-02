@@ -7,6 +7,7 @@ class Clyde(Fantasma):
         x = (LARGURA_MAPA//2) * BLOCO + MARGEM_X +2
         y = (ALTURA_MAPA//2 -5) * BLOCO + MARGEM_Y +2
         super().__init__(grupos, img, x, y)
+        self.cor = 'LARANJA'
 
     def define_prioridade(self):
         direcao = randint(1,4)

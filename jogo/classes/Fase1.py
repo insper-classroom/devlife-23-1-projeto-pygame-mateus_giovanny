@@ -66,10 +66,8 @@ class Fase1:
         return fonte.render(text, True, BRANCO)
 
     def verifica_pontuacao(self):
-        if os.path.getsize("pontuacao.txt") == 0:
-            return True
-        with open('pontuacao.txt','w') as arquivo:
-            linhas = arquivo.readlines()
+        with open('pontuacao.txt','r') as arquivo:
+            linhas = len(arquivo.readlines())
             if linhas < 6:
                 return True
             for linha in range(linhas):

@@ -8,6 +8,7 @@ class Inky(Fantasma):
         y = (ALTURA_MAPA//2 -5) * BLOCO + MARGEM_Y +2 
         super().__init__(grupos, img, x, y)
         self.zona = randint(1,4)
+        self.cor = 'AZUL'
 
     def define_prioridade(self):
         if self.pos_jogador[0] < (LARGURA_MAPA//2) * BLOCO + MARGEM_X and self.pos_jogador[1] < (ALTURA_MAPA//2 -5) * BLOCO + MARGEM_Y:

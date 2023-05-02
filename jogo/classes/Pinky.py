@@ -6,6 +6,7 @@ class Pinky(Fantasma):
         x = (LARGURA_MAPA//2) * BLOCO + MARGEM_X +2
         y = (ALTURA_MAPA//2 -5) * BLOCO + MARGEM_Y +2
         super().__init__(grupos, img, x, y)
+        self.cor = 'ROSA'
 
     def define_prioridade(self):
         if self.prox_direcao_jogador == 'direita':

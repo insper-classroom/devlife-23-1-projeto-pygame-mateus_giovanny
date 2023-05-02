@@ -39,9 +39,9 @@ VELOCIDADE = 5
 
 #fantasmas
 TAMANHO_FANTASMA = (BLOCO-4,BLOCO-4)
-FANTASMA_AMARELO = pygame.transform.scale(pygame.image.load('assets\img/fantasma_amarelo.png'), TAMANHO_FANTASMA)
-FANTASMA_VERMELHO = pygame.transform.scale(pygame.image.load('assets\img/fatasma_vermelho_direita.png'), TAMANHO_FANTASMA)
-FANTASMA_AZUL = pygame.transform.scale(pygame.image.load('assets\img/fantasma_azul_direita.png'), TAMANHO_FANTASMA)
-FANTASMA_ROSA = pygame.transform.scale(pygame.image.load('assets\img/fantasma_rosa_direita.png'), TAMANHO_FANTASMA)
+FANTASMA_AMARELO = pygame.transform.scale(pygame.image.load('assets\img/fantasmas completos\LARANJA_DIREITA.png'), TAMANHO_FANTASMA)
+FANTASMA_VERMELHO = pygame.transform.scale(pygame.image.load('assets\img/fantasmas completos\VERMELHO_DIREITA.png'), TAMANHO_FANTASMA)
+FANTASMA_AZUL = pygame.transform.scale(pygame.image.load('assets\img/fantasmas completos\AZUL_DIREITA.png'), TAMANHO_FANTASMA)
+FANTASMA_ROSA = pygame.transform.scale(pygame.image.load('assets\img/fantasmas completos\ROSA_DIREITA.png'), TAMANHO_FANTASMA)
 FANTASMA_MORTO = pygame.transform.scale(pygame.image.load('assets\img/olho_direita.png'), TAMANHO_FANTASMA)
 FANTASMA_FUGINDO = [pygame.transform.scale(pygame.image.load('assets\img/fantasma azul.png'), TAMANHO_FANTASMA), pygame.transform.scale(pygame.image.load('assets\img/fantasma branco.png'), TAMANHO_FANTASMA)]

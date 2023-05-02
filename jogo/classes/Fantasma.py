@@ -21,6 +21,7 @@ class Fantasma(pygame.sprite.Sprite):
         self.pos_jogador = None
         self.prox_direcao_jogador = None
         self.prioridade = ''
+        self.cor = ''
                 
     
     def verifica_parede(self, x, y):
@@ -294,12 +295,20 @@ class Fantasma(pygame.sprite.Sprite):
             pass
         else:
             if self.direcao['direita']:
+                if not self.estado['fugindo']:
+                    self.image = pygame.transform.scale(pygame.image.load(f'assets\img/fantasmas completos\{self.cor}_DIREITA.png'), TAMANHO_FANTASMA)
                 self.rect.x += self.velocidade
             elif self.direcao['esquerda']:
+                if not self.estado['fugindo']:
+                    self.image = pygame.transform.scale(pygame.image.load(f'assets\img/fantasmas completos\{self.cor}_ESQUERDA.png'), TAMANHO_FANTASMA)
                 self.rect.x -= self.velocidade
             elif self.direcao['cima']:
+                if not self.estado['fugindo']:
+                    self.image = pygame.transform.scale(pygame.image.load(f'assets\img/fantasmas completos\{self.cor}_CIMA.png'), TAMANHO_FANTASMA)
                 self.rect.y -= self.velocidade
             elif self.direcao['baixo']:
+                if not self.estado['fugindo']:
+                    self.image = pygame.transform.scale(pygame.image.load(f'assets\img/fantasmas completos\{self.cor}_BAIXO.png'), TAMANHO_FANTASMA)
                 self.rect.y += self.velocidade
 
         if self.rect.x < MARGEM_X+1:
@@ -320,6 +329,3 @@ class Fantasma(pygame.sprite.Sprite):
         if self.estado['morto']:
             self.estado['fugindo'] =  False
             self.image = FANTASMA_MORTO
-
-        if not self.estado['fugindo'] and not self.estado['morto']:
-            self.image = self.img

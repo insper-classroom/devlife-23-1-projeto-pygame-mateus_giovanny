@@ -7,6 +7,7 @@ class Blinky(Fantasma):
         y = (ALTURA_MAPA//2 -5) * BLOCO + MARGEM_Y +2
         super().__init__(grupos, img, x, y)
         self.estado['preso'] = False
+        self.cor = 'VERMELHO'
 
     def escolhe_direcao(self):
         if self.prioridade == 'direita':
