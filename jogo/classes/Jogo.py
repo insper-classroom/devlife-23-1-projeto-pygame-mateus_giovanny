@@ -10,7 +10,7 @@ class Jogo:
 
     Atributos
     ---------
-    tela_atual : Class
+    tela_atual : Classe de tela
         é a classe da tela atual que o jogo está
     pontuacao : int
         é a pontuação do jogador no jogo
@@ -34,7 +34,10 @@ class Jogo:
         self.tela_atual = Tela_inicial()
         self.pontucao = 0
 
-    def atualiza(self):
+    def atualiza(self) -> bool:
+        """
+        atualiza a tela atual do jogo, se tela_atual -> None fecha o jogo
+        """
         pygame.time.Clock().tick(30)
 
         self.tela_atual = self.tela_atual.atualiza()
@@ -43,12 +46,18 @@ class Jogo:
             return False
         return True
     
-    def desenha(self):
+    def desenha(self) -> None:
+        """
+        chama a função desenha da tela atual
+        """
         JANELA.fill(PRETO)
         self.tela_atual.desenha()
         pygame.display.update()
 
     def game_loop(self):
+        """
+        
+        """
         while self.atualiza():
             self.desenha()
     
