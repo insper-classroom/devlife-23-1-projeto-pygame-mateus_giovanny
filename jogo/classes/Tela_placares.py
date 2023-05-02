@@ -3,10 +3,40 @@ from constantes import *
 import os
 
 class Tela_placares:
+    """
+    Essa tela mostra as 5 melhores pontuações salvas no computador do jogador
+
+    ...
+
+    Atributos
+    ---------
+    imagem : pygame.surface
+        essa tela tambem é uma imagem definida em constantes
+    
+    Métodos
+    -------
+    text2image(text) : pygame.surface
+        converte uma string em imagem para ser desenhada
+    ordena_placar() : list
+        lê o arquivo de pontuação e retorna uma lista de tuplas ordenada pela pontuação de forma decresente
+    atualiza() : Class
+        atualiza o estado da tela de placares, sempre verificando se o jogador clicou em algum dos botoes da tela,
+        caso não tenha clicado retorna a própria classe
+    desenha() : None
+        desenha a imagem da tela no fundo e desenha as pontuações por cima
+    """
     def __init__(self):
         self.imagem = IMG_TELA_PLACARES
 
     def text2image(self, text):
+        """
+        converte uma string em imagem para ser desenhada
+
+        Parâmetros
+        ----------
+        text :  str
+            o texto que vai ser transformado em imagem(obrigatório)
+        """
         fonte = pygame.font.Font(FONTE, 40)
         return fonte.render(text, True, AMARELO_PAC_MAN)
     
@@ -34,8 +64,10 @@ class Tela_placares:
 
     def desenha(self):
         JANELA.blit(self.imagem,(TAMANHO_JANELA[0]//2 - TAMANHO_IMG_TELA_INICIAL[0]//2 ,TAMANHO_JANELA[1]//2 - TAMANHO_IMG_TELA_INICIAL[1]//2))
-        for tupla in self.ordena_placar():
-            JANELA.blit(self.text2image(f'{tupla[1]} : {tupla[0]}'), (405,200))
+        lista_placar = self.ordena_placar()
+        for tupla in lista_placar:
+            img = self.text2image(f'{tupla[1]} : {tupla[0]}')
+            JANELA.blit(img, (405,200 + img.get_height() * lista_placar.index(tupla)))
 
 
 

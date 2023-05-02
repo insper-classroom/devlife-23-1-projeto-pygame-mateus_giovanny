@@ -33,8 +33,7 @@ AMARELO_PAC_MAN = (255,255,0)
 
 #jogador
 TAMANHO_JOGADOR = (BLOCO-4,BLOCO-4)
-PAC_MAN = [pygame.transform.scale(pygame.image.load('assets\img\PACs/baixo1.png'), TAMANHO_JOGADOR),pygame.transform.scale(pygame.image.load('assets\img\pac_man_E.png'), TAMANHO_JOGADOR),
-pygame.transform.scale(pygame.image.load('assets\img\pac_man_C.png'), TAMANHO_JOGADOR),pygame.transform.scale(pygame.image.load('assets\img\pac_man_B.png'), TAMANHO_JOGADOR)]
+PAC_MAN = pygame.transform.scale(pygame.image.load('assets\img\PACs/baixo1.png'), TAMANHO_JOGADOR)
 VELOCIDADE = 5
 
 #fantasmas

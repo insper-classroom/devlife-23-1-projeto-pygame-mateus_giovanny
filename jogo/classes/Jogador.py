@@ -6,7 +6,7 @@ class Jogador(pygame.sprite.Sprite):
         super().__init__()
         self.grupos = grupos
         self.grupos['all_sprites'].add(self)
-        self.image = PAC_MAN[0]
+        self.image = PAC_MAN
         self.rect = self.image.get_rect()
         self.rect.x = (LARGURA_MAPA//2) * BLOCO + MARGEM_X +2
         self.rect.y = (ALTURA_MAPA//2) * BLOCO + MARGEM_Y +2

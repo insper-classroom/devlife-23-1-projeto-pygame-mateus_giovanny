@@ -1,9 +1,25 @@
 import pygame
 from constantes import *
 
-
-
 class Tela_inicial:
+    """
+    Essa é a classe da tela inicial do jogo
+
+    ...
+
+    Atributos
+    ---------
+    imagem : pygame.surface
+        a tela incial é uma imagem que está definida em constantes
+
+    Métodos
+    -------
+    atualiza() : Class
+        atualiza o estado da tela inicial, sempre verificando se o jogador clicou em algum dos botoes da tela,
+        caso não tenha clicado retorna a própria classe
+    desenha() : None
+        desenha a imagem da tela incial
+    """
     def __init__(self):
         self.imagem = IMG_TELA_INICIAL
 
@@ -27,6 +43,3 @@ class Tela_inicial:
 
     def desenha(self):
         JANELA.blit(self.imagem,(TAMANHO_JANELA[0]//2 - TAMANHO_IMG_TELA_INICIAL[0]//2 ,TAMANHO_JANELA[1]//2 - TAMANHO_IMG_TELA_INICIAL[1]//2))
-        # pygame.draw.rect(JANELA,AZUL,pygame.Rect(433, 363, 163, 42))
-        # pygame.draw.rect(JANELA,AZUL,pygame.Rect(358, 415, 310, 78))
-        # pygame.draw.rect(JANELA,AZUL,pygame.Rect(417, 501, 192, 42))

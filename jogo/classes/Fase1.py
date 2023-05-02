@@ -80,7 +80,7 @@ class Fase1:
     def desenha(self):
         JANELA.blit(self.text2image(f"Pontuação: {str(self.estado['pontuacao'])}"), (0,0))
         for i in range(self.estado['jogador_vidas']):
-            JANELA.blit(PAC_MAN[0], (i * PAC_MAN[0].get_width(),20))
+            JANELA.blit(PAC_MAN, (i * PAC_MAN.get_width(),20))
         for parede in self.grupos['paredes']:
             if parede.height == BLOCO//2:
                 pygame.draw.rect(JANELA, BRANCO, parede)
