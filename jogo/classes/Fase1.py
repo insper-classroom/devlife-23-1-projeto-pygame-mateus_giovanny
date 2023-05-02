@@ -68,6 +68,7 @@ class Fase1:
     def verifica_pontuacao(self):
         with open('pontuacao.txt','r') as arquivo:
             linhas = len(arquivo.readlines())
+            print(linhas)
             if linhas < 6:
                 return True
             for linha in range(linhas):

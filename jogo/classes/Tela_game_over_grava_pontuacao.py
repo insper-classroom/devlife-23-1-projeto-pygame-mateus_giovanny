@@ -14,7 +14,7 @@ class Tela_game_over_pontuacao:
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 if 609>= evento.pos[0] >= 416 and 735 >= evento.pos[1] >=668:
                     from classes.Fase1 import Fase1
-                    return Fase1(0)
+                    return Fase1(0,3)
             if evento.type == pygame.KEYDOWN:
                 if len(self.nome) <  3 and pygame.key.name(evento.key) in self.alfabeto:
                     self.nome += pygame.key.name(evento.key).upper()
