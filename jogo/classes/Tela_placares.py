@@ -12,23 +12,11 @@ class Tela_placares:
     ---------
     imagem : pygame.surface
         essa tela tambem é uma imagem definida em constantes
-    
-    Métodos
-    -------
-    text2image(text) : pygame.surface
-        converte uma string em imagem para ser desenhada
-    ordena_placar() : list
-        lê o arquivo de pontuação e retorna uma lista de tuplas ordenada pela pontuação de forma decresente
-    atualiza() : Class
-        atualiza o estado da tela de placares, sempre verificando se o jogador clicou em algum dos botoes da tela,
-        caso não tenha clicado retorna a própria classe
-    desenha() : None
-        desenha a imagem da tela no fundo e desenha as pontuações por cima
     """
     def __init__(self):
         self.imagem = IMG_TELA_PLACARES
 
-    def text2image(self, text):
+    def text2image(self, text) -> pygame.surface:
         """
         converte uma string em imagem para ser desenhada
 
@@ -40,7 +28,10 @@ class Tela_placares:
         fonte = pygame.font.Font(FONTE, 40)
         return fonte.render(text, True, AMARELO_PAC_MAN)
     
-    def ordena_placar(self):
+    def ordena_placar(self) -> list:
+        """
+        lê o arquivo de pontuação e retorna uma lista de tuplas ordenada pela pontuação de forma decresente
+        """
         placar_tuplas = []
         contador = 0
         with open('pontuacao.txt', 'r') as arquivo:
@@ -55,6 +46,10 @@ class Tela_placares:
         return sorted(placar_tuplas, reverse=True)
     
     def atualiza(self):
+        """
+        atualiza o estado da tela de placares, sempre verificando se o jogador clicou em algum dos botoes da tela,
+        caso não tenha clicado retorna a própria classe
+        """
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return None
@@ -65,6 +60,9 @@ class Tela_placares:
         return self
 
     def desenha(self):
+        """
+        desenha a imagem da tela no fundo e desenha as pontuações por cima
+        """
         contador = 0
         JANELA.blit(self.imagem,(TAMANHO_JANELA[0]//2 - TAMANHO_IMG_TELA_INICIAL[0]//2 ,TAMANHO_JANELA[1]//2 - TAMANHO_IMG_TELA_INICIAL[1]//2))
         lista_placar = self.ordena_placar()

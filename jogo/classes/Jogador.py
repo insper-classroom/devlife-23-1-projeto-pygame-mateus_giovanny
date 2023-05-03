@@ -2,7 +2,37 @@ import pygame
 from constantes import *
 
 class Jogador(pygame.sprite.Sprite):
+    """
+    classe que representa o jogador
+
+    ...
+
+    Atributos
+    ---------
+    grupos : dict
+        dicionario onde eu guardo os grupos de sprites e listas de retangulos que a classe usa pra colisao
+    image : pygame.surface
+        é a imagem que vai ser blitada na tela
+    rect : pygame.Rect
+        é o retangulo do jogador
+    direcao : dict
+        é um dicionario que indica em qual direcao o jogador está indo
+    comedor : bool
+        é um estado do jogador que indica que ele comeu um come-fantasmas
+    index : int
+        usado pra fazer a animacao da boca do pac man
+    velocidade : int
+        velocidade de movimento do jogador
+    prox_direcao : str
+        string contendo a direcao desejada pelo jogador
+    """
     def __init__(self, grupos):
+        """
+        Parâmetros
+        ----------
+        grupos : dict
+            dicionario onde eu guardo os grupos de sprites e listas de retangulos que a classe usa pra colisao
+        """
         super().__init__()
         self.grupos = grupos
         self.grupos['all_sprites'].add(self)
@@ -19,6 +49,9 @@ class Jogador(pygame.sprite.Sprite):
         COMENDO_POWER.set_volume(0.5)
 
     def update(self):
+        """
+        atualiza a posição do jogador, verifica as colisoes com objetos e muda a imagem fazendo a animação
+        """
         if self.index == 4:
             self.index = 1
             
@@ -66,9 +99,15 @@ class Jogador(pygame.sprite.Sprite):
             
 
     def reseta_direcao(self):
+        """
+        reseta o dicionario de direcao, para o pac man não tentar ir em duas direcoes ao mesmo tempo
+        """
         self.direcao = {'direita': False, 'esquerda': False, 'cima': False, 'baixo': False}
 
     def verifica_direcao_livre(self):
+        """
+        verifica se o pac man pode ir pra uma direcao
+        """
         if self.prox_direcao == 'direita':
             if pygame.Rect(self.rect.x+self.velocidade,self.rect.y,self.rect.width,self.rect.height).collidelist(self.grupos['paredes']) == -1:
                 self.reseta_direcao()

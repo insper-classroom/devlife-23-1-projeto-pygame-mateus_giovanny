@@ -11,19 +11,15 @@ class Tela_inicial:
     ---------
     imagem : pygame.surface
         a tela incial é uma imagem que está definida em constantes
-
-    Métodos
-    -------
-    atualiza() : Class
-        atualiza o estado da tela inicial, sempre verificando se o jogador clicou em algum dos botoes da tela,
-        caso não tenha clicado retorna a própria classe
-    desenha() : None
-        desenha a imagem da tela incial
     """
     def __init__(self):
         self.imagem = IMG_TELA_INICIAL
 
     def atualiza(self):
+        """
+        atualiza o estado da tela inicial, sempre verificando se o jogador clicou em algum dos botoes da tela,
+        caso não tenha clicado retorna a própria classe
+        """
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 return None
@@ -42,4 +38,7 @@ class Tela_inicial:
         return self
 
     def desenha(self):
+        """
+        desenha a imagem da tela incial
+        """
         JANELA.blit(self.imagem,(TAMANHO_JANELA[0]//2 - TAMANHO_IMG_TELA_INICIAL[0]//2 ,TAMANHO_JANELA[1]//2 - TAMANHO_IMG_TELA_INICIAL[1]//2))

@@ -14,17 +14,6 @@ class Jogo:
         é a classe da tela atual que o jogo está
     pontuacao : int
         é a pontuação do jogador no jogo
-
-    Métodos
-    -------
-    atualiza() : bool
-        atualiza a tela atual do jogo, se tela_atual -> None fecha o jogo
-    desenha() : None
-        chama a função desenha da tela atual
-    game_loop() : None
-        mantém o jogo em loop
-    finaliza() : None
-        encerra o pygame
     """
     def __init__(self):
         pygame.init()
@@ -54,12 +43,15 @@ class Jogo:
         self.tela_atual.desenha()
         pygame.display.update()
 
-    def game_loop(self):
+    def game_loop(self) -> None:
         """
-        
+        mantém o jogo em loop
         """
         while self.atualiza():
             self.desenha()
     
-    def finaliza(self):
+    def finaliza(self) -> None:
+        """
+        encerra o pygame
+        """
         pygame.quit()

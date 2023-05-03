@@ -2,6 +2,40 @@ import pygame
 from constantes import *
 
 class Fantasma(pygame.sprite.Sprite):
+    """
+    classe geral que representa os fantasmas do jogo
+
+    ...
+
+    Atributos
+    ---------
+    img : pygame.surface
+        imagem inicial do fantasma
+    grupos : dict
+        dicionario onde eu guardo os grupos de sprites e listas de retangulos que a classe usa pra colisao
+    image : pygame.surface
+        é a imagem que vai ser blitada na tela
+    rect : pygame.Rect
+        é o retangulo do fantasma
+    direcao : dict
+        é um dicionario que indica em qual direcao o fantasma está indo
+    pos_inicial : list
+        posicao inicial do fantasma no mapa
+    velocidade : int
+        velocidade de movimento do fantasma
+    estado : dict
+        dicionairo contendo os estados do fastasma
+    direcao_oposta : str
+        string que contem a direcao oposta a que o fantasma escolheu, usado para garantir que ele tenha um movimento continuo
+    pos_jogador : tuple
+        posição atual do jogador, usada no algoritimo de perseguicao e no de fuga
+    prox_direcao_jogador : str
+        usado no algoritimo de perseguicao
+    prioridade : str
+        string contendo a direcao prioritaria do fantasma
+    cor : str
+        string contendo a cor do fantasma
+    """
     def __init__(self, grupos, img, x, y):
         super().__init__()
 
@@ -25,6 +59,16 @@ class Fantasma(pygame.sprite.Sprite):
                 
     
     def verifica_parede(self, x, y):
+        """
+        verifica se tem uma parede na posicao que o fantasma está tentando ir
+
+        Parâmetros
+        ----------
+        x : int
+            posicao x do fantasma
+        y : int
+            posicao y do fantasma
+        """
         if pygame.Rect(x, y, self.rect.width, self.rect.height).collidelist(self.grupos['paredes']) == -1:
             return True
         return False

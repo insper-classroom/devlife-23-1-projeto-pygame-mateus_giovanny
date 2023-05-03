@@ -8,7 +8,30 @@ from classes.Inky import Inky
 from classes.Pinky import Pinky
 
 class Fase1:
-    def __init__(self,pontuacao, vidas):
+    """
+    Classe responsável por gerenciar o estado e os objetos da fase
+
+    ...
+
+    Atributos
+    ---------
+
+    grupos : dict
+        dicionario onde eu guardo os grupos de sprites e listas de retangulos que eu uso tanto pra colisao como para desenhar
+    estado : dict
+        dicionario onde eu guardo algumas variaveis que tem haver com o estado do jogo, por exemplo a pontuação do jogador
+    jogador : class Jogador
+        variavel onde eu guardo a instancia da classe jogador
+    """
+    def __init__(self,pontuacao=0, vidas=3):
+        """
+        Parâmetros
+        ----------
+        pontuacao : int
+            é o numero que representa a pontuação do jogador(padrao = 0)
+        vidas : int
+            é o numero de vidas restantes do jogador(padrao = 3)
+        """
         pygame.mixer.music.load('assets\som\ghostmove.ogg')
         pygame.mixer.music.set_volume(0.4)
         pygame.mixer.music.play(-1)
@@ -32,7 +55,8 @@ class Fase1:
             'animacao_pac': 0,
             'jogador_vidas': vidas,
             'tocando': 'ghostmove',
-            'jogador_comeu': 0
+            'jogador_comeu': 0,
+            'tempo_animacao_fugindo': 0
             }
         self.jogador = Jogador(self.grupos)
         Blinky(self.grupos, FANTASMA_VERMELHO)
@@ -40,9 +64,11 @@ class Fase1:
         Inky(self.grupos, FANTASMA_AZUL)
         Clyde(self.grupos, FANTASMA_AMARELO)
         self.le_mapa()
-        self.tempo_animacao_fugindo = 0
 
-    def le_mapa(self):
+    def le_mapa(self) -> None:
+        """
+        essa funcao le o arquivo do mapa e adiciona os objetos em seus respectivos grupos
+        """
         with open('mapas/mapa1.txt','r') as mapa1:
             for y in range(ALTURA_MAPA):
                 linha = mapa1.readline()
@@ -61,25 +87,23 @@ class Fase1:
                         rect = pygame.Rect(x * BLOCO + MARGEM_X, y * BLOCO + MARGEM_Y, BLOCO, BLOCO//2)
                         self.grupos['paredes'].append(rect)
 
-    def text2image(self, text):
+    def text2image(self, text) -> pygame.surface:
+        """
+        converte uma string em imagem para ser desenhada
+
+        Parâmetros
+        ----------
+        text :  str
+            o texto que vai ser transformado em imagem(obrigatório)
+
+        """
         fonte = pygame.font.Font(FONTE, 20)
         return fonte.render(text, True, BRANCO)
-
-    def verifica_pontuacao(self):
-        contador = 0
-        with open('pontuacao.txt','r') as arquivo:
-            arquivo.seek(0)
-            for linha in arquivo:
-                contador += 1
-                conteudo_linha = linha.strip()
-                if conteudo_linha == '':
-                    break
-                nome_potuacao = conteudo_linha.split(':')
-                if self.estado['pontuacao'] > int(nome_potuacao[1]):
-                    return True
-        return False
                 
-    def desenha(self):
+    def desenha(self) -> None:
+        """
+        desenha os objetos da fase na tela
+        """
         JANELA.blit(self.text2image(f"Pontuação: {str(self.estado['pontuacao'])}"), (0,0))
         for i in range(self.estado['jogador_vidas']):
             JANELA.blit(PAC_MAN, (i * PAC_MAN.get_width(),20))
@@ -96,10 +120,17 @@ class Fase1:
 
 
     def atualiza(self):
+        """
+        atualiza o estado da fase, verificando se o jogador perdeu, comeu um dos come-fantasmas. tambem atualiza o estado de todos os objetos do jogo, caso o 
+        jogador não tenha perdido retorna a propria classe para dar continuidade ao loop do jogo
+        """
+
+        #caluculo o delta_t
         t1 = pygame.time.get_ticks()
         self.estado['delta_t'] = (t1 - self.estado['t0']) / 1000
         self.estado['t0'] = t1
 
+        #vejo se os fantasmasa estão presos, e os libero um a um com um delay entre um e outro
         self.estado['tempo_sair'] += self.estado['delta_t']
         if self.estado['tempo_sair'] >= 2:
             self.estado['tempo_sair'] = 0
@@ -108,13 +139,16 @@ class Fase1:
                     fantasma.estado['preso'] = False
                     break
 
+        #faço a animacao do abre e fecha da boquinha do pac man
         self.estado['animacao_pac'] += self.estado['delta_t']
         if self.estado['animacao_pac'] >= 0.05:
             self.estado['animacao_pac'] = 0
             self.jogador.index +=1
 
+        #verifico se o jogador comeu um dos come-fantasmas
         if len(self.grupos['come_fantasma']) < self.estado['come_fantasma']['quantidade']:
 
+            #troco a musica de fundo pra musica de perseguicao
             if self.estado['tocando'] == 'ghostmove':
                 self.estado['tocando'] = 'power_pellet'
                 pygame.mixer.music.load('assets\som\power_pellet.wav')
@@ -125,10 +159,12 @@ class Fase1:
             index = 0
             self.jogador.comedor = True
 
+            #atualizo o estado dos fantasmas
             for fantasma in self.grupos['fantasmas']:
                 if not fantasma.estado['morto'] and fantasma.estado['mortes'] == 0:
                     fantasma.estado['fugindo'] = True
 
+            #faço a animação de quando o efeito do come-fantasma tá perto de acabar
             if self.estado['come_fantasma']['tempo'] >= 8:
                 self.tempo_animacao_fugindo += self.estado['delta_t']
                 if self.tempo_animacao_fugindo > 0.3:
@@ -139,6 +175,7 @@ class Fase1:
                 if fantasma.estado['fugindo']:
                     fantasma.image = FANTASMA_FUGINDO[index]
 
+            #faço tudo voltar ao normal depois que o efeito do come-fantasma acabou
             if self.estado['come_fantasma']['tempo'] >= 10:
                 self.estado['tocando'] = 'ghostmove'
                 pygame.mixer.music.load('assets\som\ghostmove.ogg')
@@ -154,6 +191,7 @@ class Fase1:
                 self.jogador.comedor = False
                 self.estado['come_fantasma']['quantidade'] -= 1
 
+        #atualizo as variaveis que o meu algoritimo de perseguição usa
         for fantasma in self.grupos['fantasmas']:
             fantasma.pos_jogador = (self.jogador.rect.x,self.jogador.rect.y)
             fantasma.prox_direcao_jogador = self.jogador.prox_direcao
@@ -178,6 +216,9 @@ class Fase1:
         if self.jogador.pontuacao != 0:
             self.estado['pontuacao'] += self.jogador.pontuacao
 
+        #verifico se o jogador está invulneravel
+        #se estiver ele pode 'comer' o fantasama
+        #caso contrario ele perde uma vida e as posicoes resetam
         if self.jogador.comedor:
             for fantasma in colisao_fantasma:
                 if fantasma.estado['fugindo']:
@@ -204,13 +245,10 @@ class Fase1:
             pygame.mixer.music.load('assets\som\musica_fundo.mp3')
             pygame.mixer.music.set_volume(0.4)
             pygame.mixer.music.play(-1)
-            if self.verifica_pontuacao():
-                from classes.Tela_game_over_grava_pontuacao import Tela_game_over_pontuacao
-                return Tela_game_over_pontuacao(self.estado['pontuacao'])
-            else:
-                from classes.Tela_game_over import Tela_game_over
-                return Tela_game_over(self.estado['pontuacao'])
+            from classes.Tela_game_over_grava_pontuacao import Tela_game_over_pontuacao
+            return Tela_game_over_pontuacao(self.estado['pontuacao'])
         
+        #verifico se as pastilas acabaram pra resetar a fase
         if len(self.grupos['bolinhas']) == 0:
             return Fase1(self.estado['pontuacao'], self.estado['jogador_vidas'])
 
