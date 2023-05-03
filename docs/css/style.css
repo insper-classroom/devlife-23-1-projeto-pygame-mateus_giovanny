@@ -498,12 +498,13 @@ section:nth-of-type(4) i{
 }
 
 .passo-a-passo a, section:nth-of-type(6) a{
-    color: #FF4500;
+    color: #00FFFF;
     text-decoration: none;
     font-style: italic;
 }
 
 .img-passo-python{
+    margin: 20px;
     width: 100%;
     height: 75vh;
     background-size: 100% 100%;
