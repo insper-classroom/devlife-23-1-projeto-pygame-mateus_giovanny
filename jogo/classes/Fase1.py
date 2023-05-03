@@ -55,8 +55,7 @@ class Fase1:
             'animacao_pac': 0,
             'jogador_vidas': vidas,
             'tocando': 'ghostmove',
-            'jogador_comeu': 0,
-            'tempo_animacao_fugindo': 0
+            'jogador_comeu': 0
             }
         self.jogador = Jogador(self.grupos)
         Blinky(self.grupos, FANTASMA_VERMELHO)
@@ -64,6 +63,7 @@ class Fase1:
         Inky(self.grupos, FANTASMA_AZUL)
         Clyde(self.grupos, FANTASMA_AMARELO)
         self.le_mapa()
+        self.tempo_animacao_fugindo = 0
 
     def le_mapa(self) -> None:
         """
