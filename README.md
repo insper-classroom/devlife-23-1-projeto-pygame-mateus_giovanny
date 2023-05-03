@@ -83,3 +83,4 @@ Agora que você já sabe como executar o jogo, é só se divertir.
 ### Créditos:
 - [Arsenic1987](https://www.youtube.com/watch?v=qtZ0hl-unM4)
 - The Copyright to Pac-Man game is the property of BANDAI NAMCOTAINMENT GROUP. This game is inspired by Pac-Man and was developed just for education purpose.
+- https://gifs.eco.br/gifs-do-pacman/
