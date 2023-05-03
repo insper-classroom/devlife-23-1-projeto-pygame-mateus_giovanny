@@ -385,13 +385,107 @@ section:nth-of-type(4) i{
     margin: 20px;
 }
 
+@keyframes balanca{
+    0% {
+        background-clip: text;
+        -webkit-background-clip: text; /* para suporte ao Safari/WebKit */
+        color: transparent;
+    }
+    10% {
+        transform: rotate(15deg);
+        background-image: linear-gradient(to top, #0A66C2, white,white,white,white,white,white,white,white,white);
+    }
+    20% {
+        transform: rotate(30deg);
+        background-image: linear-gradient(to top, #0A66C2, #0A66C2,white,white,white,white,white,white,white,white);
+    }
+    30% {
+        transform: rotate(45deg);
+        background-image: linear-gradient(to top, #0A66C2, #0A66C2,#0A66C2,white,white,white,white,white,white,white);
+    }
+    40% {
+        transform: rotate(30deg);
+        background-image: linear-gradient(to top, #0A66C2, #0A66C2,#0A66C2,#0A66C2,white,white,white,white,white,white);
+    }
+    50% {
+        transform: rotate(15deg);
+        background-image: linear-gradient(to top, #0A66C2, #0A66C2,#0A66C2,#0A66C2,#0A66C2,white,white,white,white,white);
+    }
+    60% {
+        transform: rotate(-15deg);
+        background-image: linear-gradient(to top, #0A66C2, #0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,white,white,white,white);
+    }
+    70% {
+        transform: rotate(-30deg);
+        background-image: linear-gradient(to top, #0A66C2, #0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,white,white,white);
+    }
+    80% {
+        transform: rotate(-45deg);
+        background-image: linear-gradient(to top, #0A66C2, #0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,white,white);
+    }
+    90% {
+        transform: rotate(-30deg);
+        background-image: linear-gradient(to top, #0A66C2, #0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,white);
+    }
+    100% {
+        transform: rotate(-15deg);
+        background-image: linear-gradient(to top, #0A66C2, #0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2,#0A66C2);
+    }
+    
+}
+
+@keyframes gira{
+    10% {
+        transform: rotate(36deg);
+    }
+    20% {
+        transform: rotate(72deg);
+    }
+    30% {
+        transform: rotate(108deg);
+    }
+    40% {
+        transform: rotate(144deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    60% {
+        transform: rotate(216deg);
+    }
+    70% {
+        transform: rotate(252deg);
+    }
+    80% {
+        transform: rotate(288deg);
+    }
+    90% {
+        transform: rotate(324deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    
+}
+
 .fa-linkedin{
-    color: #0A66C2;
+    color: white;
 }
 
 .fa-github{
+    color: white;
+}
+
+.fa-linkedin:hover{
+    animation: balanca 0.3s ease-in;
+    color: #0A66C2;
+}
+
+.fa-github:hover{
+    animation: gira 0.2s ease-in;
     color: #24292E;
 }
+
 
 .passo-a-passo{
     margin: 30px 0;
